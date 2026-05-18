@@ -1,20 +1,33 @@
 import Link from 'next/link'
+import { createClient } from '@/lib/supabase/server'
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = await createClient()
+
+  const [{ data: projects }, { data: guestbook }] = await Promise.all([
+    supabase
+      .from('projects')
+      .select('id, title, region, partner_company, cover_image_url, impact_text')
+      .eq('is_published', true)
+      .order('sort_order')
+      .order('created_at', { ascending: false })
+      .limit(3),
+    supabase
+      .from('guestbook')
+      .select('id, name, message, created_at')
+      .eq('is_hidden', false)
+      .order('created_at', { ascending: false })
+      .limit(3),
+  ])
+
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 20px' }}>
 
       {/* 프로필 카드 */}
       <div style={{
-        background: '#fff',
-        borderRadius: 24,
-        padding: '36px 40px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: 36,
-        boxShadow: '0 2px 16px rgba(240,160,190,0.12)',
-        marginBottom: 32,
-        flexWrap: 'wrap',
+        background: '#fff', borderRadius: 24, padding: '36px 40px',
+        display: 'flex', alignItems: 'center', gap: 36,
+        boxShadow: '0 2px 16px rgba(240,160,190,0.12)', marginBottom: 32, flexWrap: 'wrap',
       }}>
         <div style={{
           width: 100, height: 100, borderRadius: '50%',
@@ -55,12 +68,35 @@ export default function HomePage() {
         {/* 최근 사업 */}
         <div style={{ background: '#fff', borderRadius: 20, padding: 28, boxShadow: '0 2px 12px rgba(240,160,190,0.1)' }}>
           <h2 style={{ margin: '0 0 16px', fontSize: 16, fontWeight: 700, color: '#4a2d40', display: 'flex', alignItems: 'center', gap: 8 }}>
-            🌍 최근 사업
+            🌿 최근 사업
           </h2>
-          <p style={{ color: '#b8a0b0', fontSize: 13, margin: 0 }}>
-            등록된 사업이 없습니다.<br />simba 페이지에서 추가해주세요.
-          </p>
-          <Link href="/portfolio" style={{ display: 'inline-block', marginTop: 16, fontSize: 13, color: '#e06b9a', textDecoration: 'none', fontWeight: 600 }}>
+          {!projects?.length ? (
+            <p style={{ color: '#c4a8b8', fontSize: 13, margin: '0 0 16px' }}>아직 등록된 사업이 없어요.</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 16 }}>
+              {projects.map(p => (
+                <Link key={p.id} href={`/portfolio/${p.id}`} style={{ textDecoration: 'none' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', borderRadius: 12, background: '#fdf6f9' }}>
+                    <div style={{
+                      width: 44, height: 44, borderRadius: 10, flexShrink: 0,
+                      background: 'linear-gradient(135deg, #fdf2f8, #ede9fe)',
+                      overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      {p.cover_image_url
+                        ? <img src={p.cover_image_url} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        : <span style={{ fontSize: 20 }}>🌍</span>
+                      }
+                    </div>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontWeight: 700, fontSize: 13, color: '#4a2d40', marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.title}</div>
+                      <div style={{ fontSize: 12, color: '#9d7a8a' }}>📍 {p.region} · 🤝 {p.partner_company}</div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+          <Link href="/portfolio" style={{ fontSize: 13, color: '#e06b9a', textDecoration: 'none', fontWeight: 600 }}>
             전체 보기 →
           </Link>
         </div>
@@ -68,12 +104,26 @@ export default function HomePage() {
         {/* 방명록 */}
         <div style={{ background: '#fff', borderRadius: 20, padding: 28, boxShadow: '0 2px 12px rgba(240,160,190,0.1)' }}>
           <h2 style={{ margin: '0 0 16px', fontSize: 16, fontWeight: 700, color: '#4a2d40', display: 'flex', alignItems: 'center', gap: 8 }}>
-            💌 방명록
+            🌸 방명록
           </h2>
-          <p style={{ color: '#b8a0b0', fontSize: 13, margin: 0 }}>
-            아직 방명록이 없어요.<br />첫 번째 메시지를 남겨주세요!
-          </p>
-          <Link href="/guestbook" style={{ display: 'inline-block', marginTop: 16, fontSize: 13, color: '#e06b9a', textDecoration: 'none', fontWeight: 600 }}>
+          {!guestbook?.length ? (
+            <p style={{ color: '#c4a8b8', fontSize: 13, margin: '0 0 16px' }}>아직 방명록이 없어요.</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
+              {guestbook.map(entry => (
+                <div key={entry.id} style={{ padding: '10px 14px', borderRadius: 12, background: '#fdf6f9' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                    <span style={{ fontWeight: 700, fontSize: 13, color: '#4a2d40' }}>🌸 {entry.name}</span>
+                    <span style={{ fontSize: 11, color: '#c4a8b8' }}>{new Date(entry.created_at).toLocaleDateString('ko-KR')}</span>
+                  </div>
+                  <p style={{ margin: 0, fontSize: 13, color: '#5c4a5a', lineHeight: 1.6, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                    {entry.message}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+          <Link href="/guestbook" style={{ fontSize: 13, color: '#e06b9a', textDecoration: 'none', fontWeight: 600 }}>
             방명록 쓰기 →
           </Link>
         </div>
