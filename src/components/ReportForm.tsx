@@ -12,11 +12,18 @@ const label: React.CSSProperties = {
   display: 'block', fontSize: 13, fontWeight: 600, color: '#7c5c6e', marginBottom: 6,
 }
 
-function getMonday(): string {
-  const d = new Date()
+function getMondayOf(dateStr: string): string {
+  const d = new Date(dateStr)
   const day = d.getDay()
   const diff = d.getDate() - day + (day === 0 ? -6 : 1)
-  return new Date(new Date().setDate(diff)).toISOString().slice(0, 10)
+  d.setDate(diff)
+  return d.toISOString().slice(0, 10)
+}
+
+function getSundayOf(mondayStr: string): string {
+  const d = new Date(mondayStr)
+  d.setDate(d.getDate() + 6)
+  return d.toISOString().slice(0, 10)
 }
 
 interface ReportFormProps {
@@ -38,7 +45,7 @@ export default function ReportForm({ userId, reportId, initialData }: ReportForm
 
   const [form, setForm] = useState({
     project_name: initialData?.project_name ?? '',
-    period_start: initialData?.period_start ?? getMonday(),
+    period_start: initialData?.period_start ?? getMondayOf(today),
     period_end: initialData?.period_end ?? today,
     activities: initialData?.activities ?? '',
     next_plan: initialData?.next_plan ?? '',
@@ -58,6 +65,24 @@ export default function ReportForm({ userId, reportId, initialData }: ReportForm
     setLoading(true)
     try {
       const supabase = createClient()
+
+      // 같은 주차 중복 체크
+      const monday = getMondayOf(form.period_start)
+      const sunday = getSundayOf(monday)
+      let dupQuery = supabase
+        .from('weekly_reports')
+        .select('id')
+        .eq('user_id', userId)
+        .gte('period_start', monday)
+        .lte('period_start', sunday)
+      if (isEdit) dupQuery = dupQuery.neq('id', reportId)
+      const { data: existing } = await dupQuery
+      if (existing && existing.length > 0) {
+        setError('해당 주차에 이미 보고서가 있어요. 기존 보고서를 수정해주세요.')
+        setLoading(false)
+        return
+      }
+
       if (isEdit) {
         const { error } = await supabase
           .from('weekly_reports')
