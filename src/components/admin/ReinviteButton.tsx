@@ -9,11 +9,17 @@ interface Props {
   role: string
 }
 
-export default function ReinviteButton({ userId, email, name, role }: Props) {
+export default function ReinviteButton({ userId, email: initialEmail, name, role }: Props) {
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
+  const [showInput, setShowInput] = useState(false)
+  const [email, setEmail] = useState(initialEmail)
 
   async function handleReinvite() {
+    if (!email) {
+      setShowInput(true)
+      return
+    }
     if (!confirm(`${email} 에게 초대 메일을 재발송할까요?\n기존 계정이 초기화됩니다.`)) return
     setLoading(true)
     try {
@@ -32,6 +38,32 @@ export default function ReinviteButton({ userId, email, name, role }: Props) {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (showInput) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <input
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          placeholder="이메일 입력"
+          autoFocus
+          style={{
+            padding: '6px 10px', border: '1px solid #ffd6e7', borderRadius: 8,
+            fontSize: 13, outline: 'none', color: '#2d1f29', width: 180,
+          }}
+        />
+        <button onClick={handleReinvite} disabled={loading || !email}
+          style={{ padding: '6px 14px', borderRadius: 8, fontSize: 13, cursor: 'pointer', fontWeight: 600, background: 'linear-gradient(135deg, #fda4c8, #f472b6)', border: 'none', color: '#fff' }}>
+          {loading ? '...' : '발송'}
+        </button>
+        <button onClick={() => setShowInput(false)}
+          style={{ padding: '6px 10px', borderRadius: 8, fontSize: 13, cursor: 'pointer', background: '#fff', border: '1px solid #e5e7eb', color: '#9d7a8a' }}>
+          취소
+        </button>
+      </div>
+    )
   }
 
   return (
