@@ -58,7 +58,7 @@ export default function HomePage() {
             🌍 최근 사업
           </h2>
           <p style={{ color: '#b8a0b0', fontSize: 13, margin: 0 }}>
-            등록된 사업이 없습니다.<br />관리자 페이지에서 추가해주세요.
+            등록된 사업이 없습니다.<br />simba 페이지에서 추가해주세요.
           </p>
           <Link href="/portfolio" style={{ display: 'inline-block', marginTop: 16, fontSize: 13, color: '#e06b9a', textDecoration: 'none', fontWeight: 600 }}>
             전체 보기 →

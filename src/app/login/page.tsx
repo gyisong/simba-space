@@ -60,7 +60,7 @@ function LoginForm() {
 
     if (!profile?.is_active) {
       await supabase.auth.signOut()
-      setError('비활성화된 계정입니다. 관리자에게 문의하세요.')
+      setError('비활성화된 계정입니다. simba에게 문의하세요.')
       setLoading(false)
       return
     }

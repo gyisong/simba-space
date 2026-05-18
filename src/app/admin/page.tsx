@@ -25,7 +25,7 @@ export default async function AdminDashboardPage() {
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 20px' }}>
       <div style={{ marginBottom: 32 }}>
-        <h1 style={{ margin: 0, fontSize: 24, fontWeight: 700, color: '#4a2d40' }}>관리자 대시보드</h1>
+        <h1 style={{ margin: 0, fontSize: 24, fontWeight: 700, color: '#4a2d40' }}>simba 대시보드</h1>
         <p style={{ margin: '6px 0 0', color: '#9d7a8a', fontSize: 14 }}>안녕하세요, {user?.name} 님 👋</p>
       </div>
 
