@@ -19,10 +19,6 @@ export default async function UsersPage() {
   const emailMap = Object.fromEntries(
     (authData?.users ?? []).map(u => [u.id, u.email ?? ''])
   )
-  // last_sign_in_at이 없으면 한 번도 로그인 안 한 미완료 상태
-  const unconfirmedIds = new Set(
-    (authData?.users ?? []).filter(u => !u.last_sign_in_at).map(u => u.id)
-  )
 
   const profiles = profilesData ?? []
 
@@ -47,11 +43,6 @@ export default async function UsersPage() {
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ fontWeight: 700, fontSize: 15, color: '#4a2d40' }}>{p.name}</span>
-                  {unconfirmedIds.has(p.id) && (
-                    <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, background: '#fef9c3', color: '#b45309', fontWeight: 600 }}>
-                      미가입
-                    </span>
-                  )}
                 </div>
                 <div style={{ fontSize: 12, color: '#c4a8b8', marginTop: 2 }}>
                   {emailMap[p.id] && <span style={{ marginRight: 8 }}>{emailMap[p.id]}</span>}
@@ -59,9 +50,7 @@ export default async function UsersPage() {
                 </div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-                {unconfirmedIds.has(p.id) && (
-                  <ReinviteButton userId={p.id} email={emailMap[p.id] ?? ''} name={p.name} role={p.role} />
-                )}
+                <ReinviteButton userId={p.id} email={emailMap[p.id] ?? ''} name={p.name} role={p.role} />
                 <UserRoleForm user={p} />
               </div>
             </div>
