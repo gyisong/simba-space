@@ -18,7 +18,7 @@ export default async function Header() {
           {user ? (
             <LogoutButton name={user.name} />
           ) : (
-            <Link href="/login" style={{ background: '#f9a8c9', color: '#fff', padding: '6px 16px', borderRadius: 20, textDecoration: 'none', fontWeight: 600 }}>
+            <Link href="/login" style={{ background: 'linear-gradient(135deg, #f472b6, #db2777)', color: '#fff', padding: '6px 16px', borderRadius: 20, textDecoration: 'none', fontWeight: 600 }}>
               로그인
             </Link>
           )}
