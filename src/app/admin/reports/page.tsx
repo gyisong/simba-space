@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import DeleteReportButton from '@/components/admin/DeleteReportButton'
 import ReportMonthFilter from '@/components/ReportMonthFilter'
+import ReportFeedbackForm from '@/components/admin/ReportFeedbackForm'
 
 function getWeekOfMonth(dateStr: string): number {
   return Math.ceil(new Date(dateStr).getDate() / 7)
@@ -16,7 +17,7 @@ export default async function AdminReportsPage({
   const [{ data: allReports }, { data: profiles }] = await Promise.all([
     supabase
       .from('weekly_reports')
-      .select('id, project_name, period_start, period_end, activities, next_plan, issues, created_at, user_id')
+      .select('id, project_name, period_start, period_end, activities, next_plan, issues, feedback, created_at, user_id')
       .order('period_start', { ascending: false }),
     supabase.from('user_profiles').select('id, name'),
   ])
@@ -124,6 +125,7 @@ export default async function AdminReportsPage({
                         <span style={{ fontSize: 13, color: '#5c4a5a' }}>{r.issues}</span>
                       </div>
                     )}
+                    <ReportFeedbackForm reportId={r.id} initialFeedback={r.feedback} />
                   </div>
                 ))}
               </div>

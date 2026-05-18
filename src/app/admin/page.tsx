@@ -16,6 +16,7 @@ export default async function AdminDashboardPage() {
     { href: '/admin/projects', emoji: '🌿', title: '사업 관리', desc: `${projectCount ?? 0}개 등록됨`, color: '#fdf2f8' },
     { href: '/admin/messages', emoji: '💬', title: '문의 메시지', desc: `미확인 ${messageCount ?? 0}건`, color: '#fce7f3' },
     { href: '/admin/guestbook', emoji: '🌸', title: '방명록 관리', desc: `${guestbookCount ?? 0}개`, color: '#fdf4ff' },
+    { href: '/admin/announcements', emoji: '📢', title: '공지사항', desc: '팀 공지 관리', color: '#fef9c3' },
     { href: '/admin/reports', emoji: '📈', title: '주간보고', desc: '팀 전체 조회', color: '#f0fdf4' },
     { href: '/admin/calendar', emoji: '🗓️', title: '캘린더', desc: '이번 달 일정', color: '#eff6ff' },
     { href: '/admin/diary', emoji: '🌷', title: '다이어리', desc: '나만의 기록', color: '#fff7ed' },

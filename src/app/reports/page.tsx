@@ -21,7 +21,7 @@ export default async function ReportsPage({
   const supabase = await createClient()
   const { data: allReports } = await supabase
     .from('weekly_reports')
-    .select('id, project_name, period_start, period_end, activities, next_plan, issues, created_at')
+    .select('id, project_name, period_start, period_end, activities, next_plan, issues, feedback, created_at')
     .eq('user_id', user.id)
     .order('period_start', { ascending: false })
 
@@ -135,6 +135,12 @@ export default async function ReportsPage({
                       <div style={{ marginTop: 10, background: '#fef9c3', borderRadius: 10, padding: '10px 14px' }}>
                         <span style={{ fontSize: 12, fontWeight: 600, color: '#b45309' }}>이슈: </span>
                         <span style={{ fontSize: 13, color: '#5c4a5a' }}>{r.issues}</span>
+                      </div>
+                    )}
+                    {r.feedback && (
+                      <div style={{ marginTop: 10, background: 'linear-gradient(135deg, #fce7f3, #fdf4ff)', borderRadius: 10, padding: '10px 14px', border: '1px solid #fda4c8' }}>
+                        <span style={{ fontSize: 12, fontWeight: 600, color: '#e06b9a' }}>💬 피드백: </span>
+                        <span style={{ fontSize: 13, color: '#5c4a5a' }}>{r.feedback}</span>
                       </div>
                     )}
                   </div>

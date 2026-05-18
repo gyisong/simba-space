@@ -1,11 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 import ToggleReadButton from '@/components/admin/ToggleReadButton'
+import MessageReplyForm from '@/components/admin/MessageReplyForm'
 
 export default async function AdminMessagesPage() {
   const supabase = await createClient()
   const { data: messages } = await supabase
     .from('contact_messages')
-    .select('*')
+    .select('id, name, email, message, is_read, reply, replied_at, created_at')
     .order('created_at', { ascending: false })
 
   const unreadCount = messages?.filter(m => !m.is_read).length ?? 0
@@ -44,6 +45,15 @@ export default async function AdminMessagesPage() {
                 </div>
               </div>
               <p style={{ margin: 0, fontSize: 14, color: '#5c4a5a', lineHeight: 1.7 }}>{m.message}</p>
+              {m.reply && (
+                <div style={{ marginTop: 12, background: 'linear-gradient(135deg, #fce7f3, #fdf4ff)', borderRadius: 10, padding: '10px 14px', border: '1px solid #fda4c8' }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: '#e06b9a', marginBottom: 4 }}>
+                    ✉️ 답변 · {m.replied_at ? new Date(m.replied_at).toLocaleDateString('ko-KR') : ''}
+                  </div>
+                  <p style={{ margin: 0, fontSize: 13, color: '#5c4a5a', lineHeight: 1.7 }}>{m.reply}</p>
+                </div>
+              )}
+              <MessageReplyForm messageId={m.id} initialReply={m.reply} />
             </div>
           ))}
         </div>

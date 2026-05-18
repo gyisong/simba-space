@@ -17,6 +17,7 @@ export default async function Header() {
           showReports={!!user}
           showCalendar={!!user}
           showAdmin={isAdmin}
+          showAnnouncements={!!user}
         />
       </div>
     </header>

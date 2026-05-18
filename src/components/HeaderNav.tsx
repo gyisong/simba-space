@@ -10,9 +10,10 @@ interface HeaderNavProps {
   showReports: boolean
   showCalendar: boolean
   showAdmin: boolean
+  showAnnouncements: boolean
 }
 
-export default function HeaderNav({ userName, showReports, showCalendar, showAdmin }: HeaderNavProps) {
+export default function HeaderNav({ userName, showReports, showCalendar, showAdmin, showAnnouncements }: HeaderNavProps) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -26,7 +27,7 @@ export default function HeaderNav({ userName, showReports, showCalendar, showAdm
         {open ? '✕' : '☰'}
       </button>
       <nav className={`header-nav${open ? ' open' : ''}`} onClick={() => setOpen(false)}>
-        <NavLinks showReports={showReports} showCalendar={showCalendar} showAdmin={showAdmin} />
+        <NavLinks showReports={showReports} showCalendar={showCalendar} showAdmin={showAdmin} showAnnouncements={showAnnouncements} />
         {userName ? (
           <LogoutButton name={userName} />
         ) : (
