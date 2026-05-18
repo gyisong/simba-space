@@ -12,11 +12,10 @@ export async function POST(request: Request) {
 
   const supabase = createAdminClient()
 
-  // 기존 유저 삭제 (user_profiles는 CASCADE로 자동 삭제)
-  const { error: deleteError } = await supabase.auth.admin.deleteUser(userId)
-  if (deleteError) {
-    return NextResponse.json({ error: `삭제 실패: ${deleteError.message}` }, { status: 400 })
-  }
+  // 기존 유저 삭제 (없으면 그냥 넘어감)
+  await supabase.auth.admin.deleteUser(userId)
+  // auth에 없어도 프로필은 직접 삭제
+  await supabase.from('user_profiles').delete().eq('id', userId)
 
   // 재초대
   const { data, error: inviteError } = await supabase.auth.admin.inviteUserByEmail(email, {
