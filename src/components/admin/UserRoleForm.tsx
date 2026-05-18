@@ -27,11 +27,10 @@ export default function UserRoleForm({ user }: { user: UserProfile }) {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-      <select value={role} onChange={e => setRole(e.target.value)}
+      <select value={role === 'superadmin' ? 'admin' : role} onChange={e => setRole(e.target.value)}
         style={{ padding: '6px 10px', border: '1px solid #ffd6e7', borderRadius: 8, fontSize: 13, outline: 'none', background: '#fff' }}>
         <option value="member">member</option>
-        <option value="admin">admin</option>
-        <option value="superadmin">superadmin</option>
+        <option value="admin">simba</option>
       </select>
       <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, cursor: 'pointer', color: '#7c5c6e' }}>
         <input type="checkbox" checked={isActive} onChange={e => setIsActive(e.target.checked)} />

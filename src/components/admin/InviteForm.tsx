@@ -84,8 +84,7 @@ export default function InviteForm() {
           <label style={label}>권한 *</label>
           <select name="role" value={form.role} onChange={handleChange} style={{ ...input, background: '#fff' }}>
             <option value="member">member</option>
-            <option value="admin">admin</option>
-            <option value="superadmin">superadmin</option>
+            <option value="admin">simba</option>
           </select>
         </div>
       </div>

@@ -7,7 +7,7 @@ import ReinviteButton from '@/components/admin/ReinviteButton'
 
 export default async function UsersPage() {
   const user = await getCurrentUser()
-  if (user?.role !== 'superadmin') redirect('/admin')
+  if (user?.role !== 'admin' && user?.role !== 'superadmin') redirect('/admin')
 
   const supabase = createAdminClient()
 
@@ -38,7 +38,7 @@ export default async function UsersPage() {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
           <div style={{ fontSize: 13, color: '#7c5c6e' }}>
             <span style={{ fontWeight: 600 }}>역할</span>
-            <span style={{ color: '#9d7a8a' }}> — member: 주간보고·캘린더만 / admin: 관리 메뉴 전체 / superadmin: 계정 관리 포함</span>
+            <span style={{ color: '#9d7a8a' }}> — member: 주간보고·캘린더만 / simba: 관리 메뉴 전체·팀원 초대 포함</span>
           </div>
           <div style={{ fontSize: 13, color: '#7c5c6e' }}>
             <span style={{ fontWeight: 600 }}>활성 체크박스</span>
