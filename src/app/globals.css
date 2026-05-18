@@ -43,7 +43,7 @@ body {
 
 .header-nav {
   display: flex;
-  gap: 24px;
+  gap: 16px;
   align-items: center;
   font-size: 14px;
 }
@@ -86,8 +86,8 @@ body {
   gap: 20px;
 }
 
-/* ===== 모바일 미디어 쿼리 (640px 이하) ===== */
-@media (max-width: 640px) {
+/* ===== 반응형 미디어 쿼리 (860px 이하) ===== */
+@media (max-width: 860px) {
   .mobile-menu-btn {
     display: flex;
   }
