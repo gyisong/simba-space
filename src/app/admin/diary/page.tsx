@@ -17,7 +17,7 @@ export default async function DiaryPage() {
           <p style={{ margin: '4px 0 0', color: '#9d7a8a', fontSize: 13 }}>{entries?.length ?? 0}개의 기록</p>
         </div>
         <Link href="/admin/diary/new"
-          style={{ background: 'linear-gradient(135deg, #fda4c8, #f472b6)', color: '#fff', padding: '10px 20px', borderRadius: 12, textDecoration: 'none', fontWeight: 600, fontSize: 14 }}>
+          style={{ background: 'linear-gradient(135deg, #f472b6, #db2777)', color: '#fff', padding: '10px 20px', borderRadius: 12, textDecoration: 'none', fontWeight: 600, fontSize: 14 }}>
           + 새 글 쓰기
         </Link>
       </div>

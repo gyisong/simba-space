@@ -18,7 +18,7 @@ export default async function AdminProjectsPage() {
           <p style={{ margin: '4px 0 0', color: '#9d7a8a', fontSize: 13 }}>{projects?.length ?? 0}개 등록됨</p>
         </div>
         <Link href="/admin/projects/new"
-          style={{ background: 'linear-gradient(135deg, #fda4c8, #f472b6)', color: '#fff', padding: '10px 20px', borderRadius: 12, textDecoration: 'none', fontWeight: 600, fontSize: 14 }}>
+          style={{ background: 'linear-gradient(135deg, #f472b6, #db2777)', color: '#fff', padding: '10px 20px', borderRadius: 12, textDecoration: 'none', fontWeight: 600, fontSize: 14 }}>
           + 새 사업 추가
         </Link>
       </div>

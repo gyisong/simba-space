@@ -18,7 +18,7 @@ export default function HomePage() {
       }}>
         <div style={{
           width: 100, height: 100, borderRadius: '50%',
-          background: 'linear-gradient(135deg, #fda4c8, #c084fc)',
+          background: 'linear-gradient(135deg, #f472b6, #c084fc)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 44, flexShrink: 0,
         }}>
@@ -32,7 +32,7 @@ export default function HomePage() {
           </p>
           <div style={{ marginTop: 14, display: 'flex', gap: 10 }}>
             <Link href="/portfolio" style={{
-              background: 'linear-gradient(135deg, #fda4c8, #f472b6)',
+              background: 'linear-gradient(135deg, #f472b6, #db2777)',
               color: '#fff', padding: '7px 18px', borderRadius: 20,
               textDecoration: 'none', fontSize: 13, fontWeight: 600,
             }}>

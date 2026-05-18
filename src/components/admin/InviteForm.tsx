@@ -50,7 +50,7 @@ export default function InviteForm() {
   if (!open) {
     return (
       <button onClick={() => setOpen(true)}
-        style={{ background: 'linear-gradient(135deg, #fda4c8, #f472b6)', color: '#fff', padding: '10px 20px', borderRadius: 12, border: 'none', fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>
+        style={{ background: 'linear-gradient(135deg, #f472b6, #db2777)', color: '#fff', padding: '10px 20px', borderRadius: 12, border: 'none', fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>
         + 팀원 초대
       </button>
     )
@@ -91,7 +91,7 @@ export default function InviteForm() {
 
       <div style={{ display: 'flex', gap: 10 }}>
         <button type="submit" disabled={loading}
-          style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #fda4c8, #f472b6)', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer', opacity: loading ? 0.6 : 1 }}>
+          style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #f472b6, #db2777)', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer', opacity: loading ? 0.6 : 1 }}>
           {loading ? '전송 중...' : '초대 메일 보내기'}
         </button>
         <button type="button" onClick={() => { setOpen(false); setResult(null) }}

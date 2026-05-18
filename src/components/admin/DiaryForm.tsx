@@ -78,7 +78,7 @@ export default function DiaryForm({ diary }: { diary?: Diary }) {
       </div>
       <div style={{ display: 'flex', gap: 12 }}>
         <button type="submit" disabled={loading}
-          style={{ padding: '12px 28px', background: 'linear-gradient(135deg, #fda4c8, #f472b6)', border: 'none', borderRadius: 12, color: '#fff', fontWeight: 700, fontSize: 15, cursor: 'pointer', opacity: loading ? 0.6 : 1 }}>
+          style={{ padding: '12px 28px', background: 'linear-gradient(135deg, #f472b6, #db2777)', border: 'none', borderRadius: 12, color: '#fff', fontWeight: 700, fontSize: 15, cursor: 'pointer', opacity: loading ? 0.6 : 1 }}>
           {loading ? '저장 중...' : isEdit ? '수정하기' : '작성하기'}
         </button>
         <button type="button" onClick={() => window.history.back()}

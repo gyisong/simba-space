@@ -23,7 +23,7 @@ export default async function ReportsPage() {
           <p style={{ margin: '4px 0 0', color: '#9d7a8a', fontSize: 13 }}>총 {reports?.length ?? 0}건</p>
         </div>
         <Link href="/reports/new"
-          style={{ background: 'linear-gradient(135deg, #fda4c8, #f472b6)', color: '#fff', padding: '10px 20px', borderRadius: 12, textDecoration: 'none', fontWeight: 600, fontSize: 14 }}>
+          style={{ background: 'linear-gradient(135deg, #f472b6, #db2777)', color: '#fff', padding: '10px 20px', borderRadius: 12, textDecoration: 'none', fontWeight: 600, fontSize: 14 }}>
           + 새 보고서
         </Link>
       </div>

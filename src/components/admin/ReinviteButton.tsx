@@ -55,7 +55,7 @@ export default function ReinviteButton({ userId, email: initialEmail, name, role
           }}
         />
         <button onClick={handleReinvite} disabled={loading || !email}
-          style={{ padding: '6px 14px', borderRadius: 8, fontSize: 13, cursor: 'pointer', fontWeight: 600, background: 'linear-gradient(135deg, #fda4c8, #f472b6)', border: 'none', color: '#fff' }}>
+          style={{ padding: '6px 14px', borderRadius: 8, fontSize: 13, cursor: 'pointer', fontWeight: 600, background: 'linear-gradient(135deg, #f472b6, #db2777)', border: 'none', color: '#fff' }}>
           {loading ? '...' : '발송'}
         </button>
         <button onClick={() => setShowInput(false)}

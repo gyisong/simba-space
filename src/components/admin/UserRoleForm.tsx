@@ -39,7 +39,7 @@ export default function UserRoleForm({ user }: { user: UserProfile }) {
       <button onClick={handleSave} disabled={loading}
         style={{
           padding: '6px 16px', border: 'none', borderRadius: 8, fontSize: 13, cursor: 'pointer', fontWeight: 600,
-          background: saved ? '#dcfce7' : 'linear-gradient(135deg, #fda4c8, #f472b6)',
+          background: saved ? '#dcfce7' : 'linear-gradient(135deg, #f472b6, #db2777)',
           color: saved ? '#16a34a' : '#fff',
         }}>
         {loading ? '...' : saved ? '저장됨' : '저장'}

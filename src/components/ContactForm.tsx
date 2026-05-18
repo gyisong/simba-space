@@ -48,7 +48,7 @@ export default function ContactForm() {
           style={{ ...input, resize: 'vertical', lineHeight: 1.7 }} placeholder="문의 내용을 입력해주세요" />
       </div>
       <button type="submit" disabled={loading}
-        style={{ width: '100%', padding: '14px', background: 'linear-gradient(135deg, #fda4c8, #f472b6)', border: 'none', borderRadius: 12, color: '#fff', fontWeight: 700, fontSize: 15, cursor: 'pointer', opacity: loading ? 0.6 : 1 }}>
+        style={{ width: '100%', padding: '14px', background: 'linear-gradient(135deg, #f472b6, #db2777)', border: 'none', borderRadius: 12, color: '#fff', fontWeight: 700, fontSize: 15, cursor: 'pointer', opacity: loading ? 0.6 : 1 }}>
         {loading ? '전송 중...' : '메시지 보내기 💌'}
       </button>
     </form>

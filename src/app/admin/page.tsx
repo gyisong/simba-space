@@ -19,7 +19,7 @@ export default async function AdminDashboardPage() {
     { href: '/admin/reports', emoji: '📋', title: '주간보고', desc: '팀 전체 조회', color: '#fef9c3' },
     { href: '/admin/calendar', emoji: '📅', title: '캘린더', desc: '이번 달 일정', color: '#ecfdf5' },
     { href: '/admin/diary', emoji: '📔', title: '다이어리', desc: '나만의 기록', color: '#fefce8' },
-    { href: '/admin/users', emoji: '🪪', title: '계정 관리', desc: '팀원 초대·권한 관리', color: '#f5f3ff' },
+    { href: '/admin/users', emoji: '👤', title: '계정 관리', desc: '팀원 초대·권한 관리', color: '#f5f3ff' },
   ]
 
   return (
@@ -33,7 +33,7 @@ export default async function AdminDashboardPage() {
         {cards.map(card => (
           <Link key={card.href} href={card.href} style={{ textDecoration: 'none' }}>
             <div style={{ background: card.color, borderRadius: 20, padding: 24, boxShadow: '0 2px 12px rgba(240,160,190,0.1)', cursor: 'pointer' }}>
-              <div style={{ fontSize: 32, marginBottom: 12 }}>{card.emoji}</div>
+              <div style={{ fontSize: 32, marginBottom: 12, fontFamily: '"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif' }}>{card.emoji}</div>
               <div style={{ fontWeight: 700, fontSize: 15, color: '#4a2d40', marginBottom: 4 }}>{card.title}</div>
               <div style={{ fontSize: 13, color: '#9d7a8a' }}>{card.desc}</div>
             </div>

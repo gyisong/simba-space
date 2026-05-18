@@ -132,7 +132,7 @@ export default function SetPasswordPage() {
           </div>
 
           <button type="submit" disabled={loading} style={{
-            width: '100%', padding: '13px', background: 'linear-gradient(135deg, #fda4c8, #f472b6)',
+            width: '100%', padding: '13px', background: 'linear-gradient(135deg, #f472b6, #db2777)',
             border: 'none', borderRadius: 12, color: '#fff', fontWeight: 700, fontSize: 15,
             cursor: 'pointer', opacity: loading ? 0.6 : 1,
           }}>

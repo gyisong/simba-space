@@ -26,7 +26,7 @@ export default async function UsersPage() {
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 20px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 16 }}>
         <div>
-          <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#4a2d40' }}>🔑 계정 관리</h1>
+          <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#4a2d40' }}>👤 계정 관리</h1>
           <p style={{ margin: '4px 0 0', color: '#9d7a8a', fontSize: 13 }}>팀원 {profiles.length}명</p>
         </div>
         <InviteForm />

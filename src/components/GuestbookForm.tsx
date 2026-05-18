@@ -35,7 +35,7 @@ export default function GuestbookForm() {
         <input value={message} onChange={e => setMessage(e.target.value)} required placeholder="메시지를 남겨주세요 🌸" style={input} />
       </div>
       <button type="submit" disabled={loading}
-        style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #fda4c8, #f472b6)', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 14, cursor: 'pointer', opacity: loading ? 0.6 : 1 }}>
+        style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #f472b6, #db2777)', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 14, cursor: 'pointer', opacity: loading ? 0.6 : 1 }}>
         {done ? '✓ 등록됐어요!' : loading ? '등록 중...' : '남기기'}
       </button>
     </form>
