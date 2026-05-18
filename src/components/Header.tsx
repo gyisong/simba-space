@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getCurrentUser } from '@/lib/auth'
 import LogoutButton from './LogoutButton'
+import NavLinks from './NavLinks'
 
 export default async function Header() {
   const user = await getCurrentUser()
@@ -13,18 +14,7 @@ export default async function Header() {
           🌸 simba&apos;s space
         </Link>
         <nav style={{ display: 'flex', gap: 24, alignItems: 'center', fontSize: 14 }}>
-          <Link href="/portfolio" style={{ color: '#7c5c6e', textDecoration: 'none' }}>포트폴리오</Link>
-          <Link href="/guestbook" style={{ color: '#7c5c6e', textDecoration: 'none' }}>방명록</Link>
-          <Link href="/contact" style={{ color: '#7c5c6e', textDecoration: 'none' }}>문의</Link>
-          {user && (
-            <>
-              <Link href="/reports" style={{ color: '#7c5c6e', textDecoration: 'none' }}>주간보고</Link>
-              <Link href="/calendar" style={{ color: '#7c5c6e', textDecoration: 'none' }}>캘린더</Link>
-            </>
-          )}
-          {isAdmin && (
-            <Link href="/admin" style={{ color: '#c084fc', textDecoration: 'none', fontWeight: 600 }}>관리</Link>
-          )}
+          <NavLinks showReports={!!user} showCalendar={!!user} showAdmin={isAdmin} />
           {user ? (
             <LogoutButton name={user.name} />
           ) : (
