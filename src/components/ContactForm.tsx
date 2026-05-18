@@ -36,7 +36,7 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} style={{ background: '#fff', borderRadius: 20, padding: 32, boxShadow: '0 2px 16px rgba(240,160,190,0.12)' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+      <div className="grid-2col-contact">
         <div><label style={label}>이름 *</label>
           <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required style={input} placeholder="이름" /></div>
         <div><label style={label}>이메일 *</label>

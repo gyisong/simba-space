@@ -29,7 +29,7 @@ export default async function AdminDashboardPage() {
         <p style={{ margin: '6px 0 0', color: '#9d7a8a', fontSize: 14 }}>안녕하세요, {user?.name} 님 👋</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 16 }}>
         {cards.map(card => (
           <Link key={card.href} href={card.href} style={{ textDecoration: 'none' }}>
             <div style={{ background: card.color, borderRadius: 20, padding: '26px 24px', boxShadow: '0 4px 16px rgba(240,160,190,0.13)', border: '1px solid rgba(253,166,200,0.18)', cursor: 'pointer', transition: 'box-shadow 0.2s' }}>

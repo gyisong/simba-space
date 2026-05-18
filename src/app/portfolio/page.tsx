@@ -24,7 +24,7 @@ export default async function PortfolioPage() {
           아직 등록된 사업이 없어요.
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
+        <div className="grid-auto-portfolio">
           {projects.map(p => (
             <Link key={p.id} href={`/portfolio/${p.id}`} style={{ textDecoration: 'none' }}>
               <div style={{ background: '#fff', borderRadius: 20, overflow: 'hidden', boxShadow: '0 2px 14px rgba(240,160,190,0.1)' }}>

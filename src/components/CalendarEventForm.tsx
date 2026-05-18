@@ -58,7 +58,7 @@ export default function CalendarEventForm({ userId }: { userId: string }) {
           {error}
         </div>
       )}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 14, marginBottom: 14 }}>
+      <div className="grid-3col-form">
         <div>
           <label style={label}>제목 *</label>
           <input name="title" value={form.title} onChange={handleChange} required style={input} placeholder="일정 제목" />

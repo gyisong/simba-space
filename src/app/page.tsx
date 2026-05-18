@@ -63,7 +63,7 @@ export default async function HomePage() {
       </div>
 
       {/* 2열 그리드 */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }}>
+      <div className="grid-2col">
 
         {/* 최근 사업 */}
         <div style={{ background: '#fff', borderRadius: 20, padding: 28, boxShadow: '0 2px 12px rgba(240,160,190,0.1)' }}>

@@ -121,7 +121,7 @@ export default async function ReportsPage({
                         <DeleteReportButton id={r.id} />
                       </div>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                    <div className="grid-2col-sm">
                       <div style={{ background: '#fdf6f9', borderRadius: 10, padding: '12px 14px' }}>
                         <div style={{ fontSize: 12, fontWeight: 600, color: '#9d7a8a', marginBottom: 6 }}>이번 주 활동</div>
                         <p style={{ margin: 0, fontSize: 13, color: '#5c4a5a', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{r.activities}</p>
