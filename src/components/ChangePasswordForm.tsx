@@ -24,8 +24,8 @@ export default function ChangePasswordForm({ email }: { email: string }) {
     e.preventDefault()
     setError('')
 
-    if (next.length < 8) {
-      setError('새 비밀번호는 8자 이상이어야 해요.')
+    if (next.length < 6) {
+      setError('새 비밀번호는 6자 이상이어야 해요.')
       return
     }
     if (next !== confirm) {
@@ -95,7 +95,7 @@ export default function ChangePasswordForm({ email }: { email: string }) {
           onChange={e => setNext(e.target.value)}
           required
           style={input}
-          placeholder="8자 이상"
+          placeholder="6자 이상"
           autoComplete="new-password"
         />
       </div>
