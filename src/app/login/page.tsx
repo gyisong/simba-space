@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
@@ -18,6 +18,24 @@ function LoginForm() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  // 기존 세션 감지: 활성 계정이면 홈으로, 비활성이면 로그아웃
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session) return
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('is_active')
+        .eq('id', session.user.id)
+        .single()
+      if (profile?.is_active) {
+        window.location.href = redirect.startsWith('/') ? redirect : '/'
+      } else {
+        await supabase.auth.signOut()
+      }
+    })
+  }, [redirect])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
