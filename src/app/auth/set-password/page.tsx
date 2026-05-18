@@ -1,14 +1,36 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
 export default function SetPasswordPage() {
+  const [ready, setReady] = useState(false)
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [done, setDone] = useState(false)
+
+  useEffect(() => {
+    // URL 해시에 access_token이 있으면 (implicit flow) 세션 설정
+    const hash = window.location.hash
+    if (hash && hash.includes('access_token')) {
+      const params = new URLSearchParams(hash.slice(1))
+      const access_token = params.get('access_token')
+      const refresh_token = params.get('refresh_token')
+      if (access_token && refresh_token) {
+        const supabase = createClient()
+        supabase.auth.setSession({ access_token, refresh_token }).then(() => {
+          window.history.replaceState(null, '', window.location.pathname)
+          setReady(true)
+        })
+      } else {
+        setReady(true)
+      }
+    } else {
+      setReady(true)
+    }
+  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -51,6 +73,14 @@ export default function SetPasswordPage() {
           <h3 style={{ margin: '0 0 8px', color: '#4a2d40', fontWeight: 700 }}>가입 완료!</h3>
           <p style={{ color: '#9d7a8a', fontSize: 14 }}>잠시 후 홈으로 이동해요.</p>
         </div>
+      </div>
+    )
+  }
+
+  if (!ready) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fdf6f9' }}>
+        <div style={{ color: '#9d7a8a', fontSize: 14 }}>잠시만요...</div>
       </div>
     )
   }
