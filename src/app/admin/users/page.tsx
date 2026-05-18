@@ -19,6 +19,10 @@ export default async function UsersPage() {
   const emailMap = Object.fromEntries(
     (authData?.users ?? []).map(u => [u.id, u.email ?? ''])
   )
+  // confirmed_at이 없으면 초대 후 가입 미완료 상태
+  const unconfirmedIds = new Set(
+    (authData?.users ?? []).filter(u => !u.confirmed_at).map(u => u.id)
+  )
 
   const profiles = profilesData ?? []
 
@@ -41,14 +45,23 @@ export default async function UsersPage() {
           {profiles.map(p => (
             <div key={p.id} style={{ background: '#fff', borderRadius: 14, padding: '16px 24px', boxShadow: '0 2px 8px rgba(240,160,190,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
               <div>
-                <div style={{ fontWeight: 700, fontSize: 15, color: '#4a2d40' }}>{p.name}</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontWeight: 700, fontSize: 15, color: '#4a2d40' }}>{p.name}</span>
+                  {unconfirmedIds.has(p.id) && (
+                    <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, background: '#fef9c3', color: '#b45309', fontWeight: 600 }}>
+                      미가입
+                    </span>
+                  )}
+                </div>
                 <div style={{ fontSize: 12, color: '#c4a8b8', marginTop: 2 }}>
                   {emailMap[p.id] && <span style={{ marginRight: 8 }}>{emailMap[p.id]}</span>}
-                  가입: {new Date(p.created_at).toLocaleDateString('ko-KR')}
+                  초대: {new Date(p.created_at).toLocaleDateString('ko-KR')}
                 </div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-                <ReinviteButton userId={p.id} email={emailMap[p.id] ?? ''} name={p.name} role={p.role} />
+                {unconfirmedIds.has(p.id) && (
+                  <ReinviteButton userId={p.id} email={emailMap[p.id] ?? ''} name={p.name} role={p.role} />
+                )}
                 <UserRoleForm user={p} />
               </div>
             </div>
