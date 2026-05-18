@@ -19,15 +19,30 @@ function getMonday(): string {
   return new Date(new Date().setDate(diff)).toISOString().slice(0, 10)
 }
 
-export default function ReportForm({ userId }: { userId: string }) {
+interface ReportFormProps {
+  userId: string
+  reportId?: string
+  initialData?: {
+    project_name: string
+    period_start: string
+    period_end: string
+    activities: string
+    next_plan: string
+    issues: string
+  }
+}
+
+export default function ReportForm({ userId, reportId, initialData }: ReportFormProps) {
   const today = new Date().toISOString().slice(0, 10)
+  const isEdit = !!reportId
+
   const [form, setForm] = useState({
-    project_name: '',
-    period_start: getMonday(),
-    period_end: today,
-    activities: '',
-    next_plan: '',
-    issues: '',
+    project_name: initialData?.project_name ?? '',
+    period_start: initialData?.period_start ?? getMonday(),
+    period_end: initialData?.period_end ?? today,
+    activities: initialData?.activities ?? '',
+    next_plan: initialData?.next_plan ?? '',
+    issues: initialData?.issues ?? '',
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -43,8 +58,17 @@ export default function ReportForm({ userId }: { userId: string }) {
     setLoading(true)
     try {
       const supabase = createClient()
-      const { error } = await supabase.from('weekly_reports').insert({ ...form, user_id: userId })
-      if (error) throw error
+      if (isEdit) {
+        const { error } = await supabase
+          .from('weekly_reports')
+          .update({ ...form })
+          .eq('id', reportId)
+          .eq('user_id', userId)
+        if (error) throw error
+      } else {
+        const { error } = await supabase.from('weekly_reports').insert({ ...form, user_id: userId })
+        if (error) throw error
+      }
       window.location.href = '/reports'
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : '오류가 발생했습니다.')
@@ -91,7 +115,7 @@ export default function ReportForm({ userId }: { userId: string }) {
       <div style={{ display: 'flex', gap: 12 }}>
         <button type="submit" disabled={loading}
           style={{ padding: '12px 28px', background: 'linear-gradient(135deg, #f472b6, #db2777)', border: 'none', borderRadius: 12, color: '#fff', fontWeight: 700, fontSize: 15, cursor: 'pointer', opacity: loading ? 0.6 : 1 }}>
-          {loading ? '제출 중...' : '주간보고 제출'}
+          {loading ? (isEdit ? '저장 중...' : '제출 중...') : (isEdit ? '수정 저장' : '주간보고 제출')}
         </button>
         <button type="button" onClick={() => window.history.back()}
           style={{ padding: '12px 28px', background: '#fff', border: '1px solid #ffd6e7', borderRadius: 12, color: '#9d7a8a', fontWeight: 600, fontSize: 15, cursor: 'pointer' }}>

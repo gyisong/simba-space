@@ -4,6 +4,7 @@ import { getCurrentUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import DeleteReportButton from '@/components/admin/DeleteReportButton'
 
+
 export default async function ReportsPage() {
   const user = await getCurrentUser()
   if (!user) redirect('/login?redirect=/reports')
@@ -43,10 +44,14 @@ export default async function ReportsPage() {
                     {r.period_start} ~ {r.period_end}
                   </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
                   <span style={{ fontSize: 12, color: '#c4a8b8' }}>
                     {new Date(r.created_at).toLocaleDateString('ko-KR')}
                   </span>
+                  <Link href={`/reports/${r.id}/edit`}
+                    style={{ padding: '5px 12px', background: '#fff', border: '1px solid #ffd6e7', borderRadius: 8, color: '#e06b9a', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
+                    수정
+                  </Link>
                   <DeleteReportButton id={r.id} />
                 </div>
               </div>
