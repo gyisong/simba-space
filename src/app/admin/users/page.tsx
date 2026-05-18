@@ -19,9 +19,9 @@ export default async function UsersPage() {
   const emailMap = Object.fromEntries(
     (authData?.users ?? []).map(u => [u.id, u.email ?? ''])
   )
-  // confirmed_at이 없으면 초대 후 가입 미완료 상태
+  // last_sign_in_at이 없으면 한 번도 로그인 안 한 미완료 상태
   const unconfirmedIds = new Set(
-    (authData?.users ?? []).filter(u => !u.confirmed_at).map(u => u.id)
+    (authData?.users ?? []).filter(u => !u.last_sign_in_at).map(u => u.id)
   )
 
   const profiles = profilesData ?? []
