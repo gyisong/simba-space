@@ -25,10 +25,24 @@ function LoginForm() {
     setLoading(true)
 
     const supabase = createClient()
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) {
       setError('이메일 또는 비밀번호가 올바르지 않습니다.')
+      setLoading(false)
+      return
+    }
+
+    // 비활성 계정 체크
+    const { data: profile } = await supabase
+      .from('user_profiles')
+      .select('is_active')
+      .eq('id', data.user.id)
+      .single()
+
+    if (!profile?.is_active) {
+      await supabase.auth.signOut()
+      setError('비활성화된 계정입니다. 관리자에게 문의하세요.')
       setLoading(false)
       return
     }
