@@ -4,6 +4,12 @@ import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
+const input: React.CSSProperties = {
+  width: '100%', padding: '11px 14px', border: '1px solid #ffd6e7',
+  borderRadius: 10, fontSize: 14, outline: 'none', fontFamily: 'inherit',
+  boxSizing: 'border-box', color: '#2d1f29',
+}
+
 function LoginForm() {
   const searchParams = useSearchParams()
   const redirect = searchParams.get('redirect') ?? '/'
@@ -31,41 +37,46 @@ function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div>
-        <label className="block text-sm font-medium text-gray-600 mb-1">이메일</label>
+        <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#7c5c6e', marginBottom: 6 }}>이메일</label>
         <input
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
           required
           autoComplete="email"
-          className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-300"
+          style={input}
           placeholder="이메일 주소"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-600 mb-1">비밀번호</label>
+        <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#7c5c6e', marginBottom: 6 }}>비밀번호</label>
         <input
           type="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
           required
           autoComplete="current-password"
-          className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-300"
+          style={input}
           placeholder="비밀번호"
         />
       </div>
 
       {error && (
-        <p className="text-sm text-red-500 text-center">{error}</p>
+        <p style={{ margin: 0, fontSize: 13, color: '#ef4444', textAlign: 'center' }}>{error}</p>
       )}
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-2.5 bg-pink-400 hover:bg-pink-500 disabled:opacity-50 text-white font-semibold rounded-lg text-sm transition-colors"
+        style={{
+          width: '100%', padding: '13px', background: 'linear-gradient(135deg, #fda4c8, #f472b6)',
+          border: 'none', borderRadius: 12, color: '#fff', fontWeight: 700, fontSize: 15,
+          cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.6 : 1,
+          fontFamily: 'inherit',
+        }}
       >
         {loading ? '로그인 중...' : '로그인'}
       </button>
@@ -75,10 +86,10 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow-md p-8">
-        <h1 className="text-2xl font-bold text-center text-gray-800 mb-2">로그인</h1>
-        <p className="text-sm text-center text-gray-400 mb-8">simba&apos;s space</p>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fdf6f9' }}>
+      <div style={{ width: '100%', maxWidth: 380, background: '#fff', borderRadius: 24, boxShadow: '0 2px 16px rgba(240,160,190,0.12)', padding: 40 }}>
+        <h1 style={{ margin: '0 0 6px', fontSize: 22, fontWeight: 700, textAlign: 'center', color: '#4a2d40' }}>로그인</h1>
+        <p style={{ margin: '0 0 28px', fontSize: 13, textAlign: 'center', color: '#9d7a8a' }}>simba&apos;s space</p>
         <Suspense fallback={null}>
           <LoginForm />
         </Suspense>
