@@ -5,13 +5,12 @@ import { createClient } from '@/lib/supabase/server'
 import DeleteReportButton from '@/components/admin/DeleteReportButton'
 
 function getWeekOfMonth(dateStr: string): number {
-  const date = new Date(dateStr)
-  return Math.ceil(date.getDate() / 7)
+  return Math.ceil(new Date(dateStr).getDate() / 7)
 }
 
 function getMonthKey(dateStr: string): string {
-  const date = new Date(dateStr)
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+  const d = new Date(dateStr)
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
 }
 
 function getMonthLabel(monthKey: string): string {
@@ -30,12 +29,15 @@ export default async function ReportsPage() {
     .eq('user_id', user.id)
     .order('period_start', { ascending: false })
 
-  // 월별 그룹핑
-  const grouped = new Map<string, typeof reports>()
+  // 월 → 주차 2단계 그룹
+  const byMonth = new Map<string, Map<number, typeof reports>>()
   for (const r of reports ?? []) {
-    const key = getMonthKey(r.period_start)
-    if (!grouped.has(key)) grouped.set(key, [])
-    grouped.get(key)!.push(r)
+    const mKey = getMonthKey(r.period_start)
+    const week = getWeekOfMonth(r.period_start)
+    if (!byMonth.has(mKey)) byMonth.set(mKey, new Map())
+    const byWeek = byMonth.get(mKey)!
+    if (!byWeek.has(week)) byWeek.set(week, [])
+    byWeek.get(week)!.push(r)
   }
 
   return (
@@ -56,62 +58,69 @@ export default async function ReportsPage() {
           아직 제출한 보고서가 없어요.
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-          {Array.from(grouped.entries()).map(([monthKey, monthReports]) => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
+          {Array.from(byMonth.entries()).map(([monthKey, byWeek]) => (
             <div key={monthKey}>
               {/* 월 헤더 */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
                 <span style={{ fontSize: 16, fontWeight: 700, color: '#4a2d40' }}>{getMonthLabel(monthKey)}</span>
                 <span style={{ fontSize: 12, color: '#c4a8b8', background: '#fdf2f8', borderRadius: 20, padding: '2px 10px' }}>
-                  {monthReports!.length}건
+                  {Array.from(byWeek.values()).reduce((s, v) => s + (v?.length ?? 0), 0)}건
                 </span>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {monthReports!.map(r => (
-                  <div key={r.id} style={{ background: '#fff', borderRadius: 16, padding: '20px 24px', boxShadow: '0 2px 10px rgba(240,160,190,0.08)' }}>
-                    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14, gap: 12 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        {/* 주차 뱃지 */}
-                        <span style={{
-                          fontSize: 12, fontWeight: 700, color: '#db2777',
-                          background: 'linear-gradient(135deg, #fce7f3, #fdf2f8)',
-                          border: '1px solid #fda4c8',
-                          borderRadius: 20, padding: '3px 10px', flexShrink: 0,
-                        }}>
-                          {getWeekOfMonth(r.period_start)}주차
-                        </span>
-                        <div>
-                          <span style={{ fontWeight: 700, fontSize: 15, color: '#4a2d40' }}>{r.project_name}</span>
-                          <div style={{ fontSize: 12, color: '#9d7a8a', marginTop: 2 }}>
-                            {r.period_start} ~ {r.period_end}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                {Array.from(byWeek.entries()).map(([week, weekReports]) => (
+                  <div key={week}>
+                    {/* 주차 헤더 */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, paddingLeft: 2 }}>
+                      <span style={{
+                        fontSize: 12, fontWeight: 700, color: '#db2777',
+                        background: 'linear-gradient(135deg, #fce7f3, #fdf2f8)',
+                        border: '1px solid #fda4c8',
+                        borderRadius: 20, padding: '3px 12px',
+                      }}>
+                        {week}주차
+                      </span>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingLeft: 8, borderLeft: '2px solid #ffd6e7' }}>
+                      {weekReports!.map(r => (
+                        <div key={r.id} style={{ background: '#fff', borderRadius: 16, padding: '20px 24px', boxShadow: '0 2px 10px rgba(240,160,190,0.08)' }}>
+                          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14, gap: 12 }}>
+                            <div>
+                              <span style={{ fontWeight: 700, fontSize: 15, color: '#4a2d40' }}>{r.project_name}</span>
+                              <div style={{ fontSize: 12, color: '#9d7a8a', marginTop: 2 }}>
+                                {r.period_start} ~ {r.period_end}
+                              </div>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+                              <Link href={`/reports/${r.id}/edit`}
+                                style={{ padding: '5px 12px', background: '#fff', border: '1px solid #ffd6e7', borderRadius: 8, color: '#e06b9a', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
+                                수정
+                              </Link>
+                              <DeleteReportButton id={r.id} />
+                            </div>
                           </div>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                            <div style={{ background: '#fdf6f9', borderRadius: 10, padding: '12px 14px' }}>
+                              <div style={{ fontSize: 12, fontWeight: 600, color: '#9d7a8a', marginBottom: 6 }}>이번 주 활동</div>
+                              <p style={{ margin: 0, fontSize: 13, color: '#5c4a5a', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{r.activities}</p>
+                            </div>
+                            <div style={{ background: '#fdf6f9', borderRadius: 10, padding: '12px 14px' }}>
+                              <div style={{ fontSize: 12, fontWeight: 600, color: '#9d7a8a', marginBottom: 6 }}>다음 주 계획</div>
+                              <p style={{ margin: 0, fontSize: 13, color: '#5c4a5a', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{r.next_plan}</p>
+                            </div>
+                          </div>
+                          {r.issues && (
+                            <div style={{ marginTop: 10, background: '#fef9c3', borderRadius: 10, padding: '10px 14px' }}>
+                              <span style={{ fontSize: 12, fontWeight: 600, color: '#b45309' }}>이슈: </span>
+                              <span style={{ fontSize: 13, color: '#5c4a5a' }}>{r.issues}</span>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-                        <Link href={`/reports/${r.id}/edit`}
-                          style={{ padding: '5px 12px', background: '#fff', border: '1px solid #ffd6e7', borderRadius: 8, color: '#e06b9a', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
-                          수정
-                        </Link>
-                        <DeleteReportButton id={r.id} />
-                      </div>
+                      ))}
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                      <div style={{ background: '#fdf6f9', borderRadius: 10, padding: '12px 14px' }}>
-                        <div style={{ fontSize: 12, fontWeight: 600, color: '#9d7a8a', marginBottom: 6 }}>이번 주 활동</div>
-                        <p style={{ margin: 0, fontSize: 13, color: '#5c4a5a', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{r.activities}</p>
-                      </div>
-                      <div style={{ background: '#fdf6f9', borderRadius: 10, padding: '12px 14px' }}>
-                        <div style={{ fontSize: 12, fontWeight: 600, color: '#9d7a8a', marginBottom: 6 }}>다음 주 계획</div>
-                        <p style={{ margin: 0, fontSize: 13, color: '#5c4a5a', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{r.next_plan}</p>
-                      </div>
-                    </div>
-                    {r.issues && (
-                      <div style={{ marginTop: 10, background: '#fef9c3', borderRadius: 10, padding: '10px 14px' }}>
-                        <span style={{ fontSize: 12, fontWeight: 600, color: '#b45309' }}>이슈: </span>
-                        <span style={{ fontSize: 13, color: '#5c4a5a' }}>{r.issues}</span>
-                      </div>
-                    )}
                   </div>
                 ))}
               </div>
