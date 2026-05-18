@@ -19,7 +19,7 @@ export default async function AdminDashboardPage() {
     { href: '/admin/reports', emoji: '📋', title: '주간보고', desc: '팀 전체 조회', color: '#fef9c3' },
     { href: '/admin/calendar', emoji: '📅', title: '캘린더', desc: '이번 달 일정', color: '#ecfdf5' },
     { href: '/admin/diary', emoji: '📔', title: '다이어리', desc: '나만의 기록', color: '#fefce8' },
-    ...(user?.role === 'admin' || user?.role === 'superadmin' ? [{ href: '/admin/users', emoji: '🪪', title: '계정 관리', desc: '팀원 초대·권한 관리', color: '#f5f3ff' }] : []),
+    { href: '/admin/users', emoji: '🪪', title: '계정 관리', desc: '팀원 초대·권한 관리', color: '#f5f3ff' },
   ]
 
   return (
