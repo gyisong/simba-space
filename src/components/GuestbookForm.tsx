@@ -25,13 +25,18 @@ export default function GuestbookForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, message, password }),
+        redirect: 'manual',
       })
+      if (res.type === 'opaqueredirect' || res.status === 0 || (res.status >= 300 && res.status < 400)) {
+        setError(`리다이렉트 발생 (status: ${res.status}, type: ${res.type}, url: ${res.url})`)
+        return
+      }
       const text = await res.text()
       let data: { error?: string; success?: boolean } = {}
       try {
         data = JSON.parse(text)
       } catch {
-        setError(`서버 응답 오류 (${res.status}): ${text.slice(0, 200)}`)
+        setError(`서버 응답 오류 (${res.status}, redirected: ${res.redirected}, url: ${res.url}): ${text.slice(0, 200)}`)
         return
       }
       if (!res.ok) {
