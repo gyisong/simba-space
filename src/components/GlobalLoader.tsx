@@ -116,7 +116,7 @@ function LoaderCore() {
           <div style={{ display: 'flex', gap: 10, marginBottom: 8, height: 20, alignItems: 'center' }}>
             {(['paw1','paw2','paw3'] as const).map((name, i) => (
               <img key={i}
-                src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/svg/1f43e.svg"
+                src="https://openmoji.org/data/color/svg/1F43E.svg"
                 alt="🐾"
                 style={{
                   width: 18, height: 18, opacity: 0,
@@ -131,7 +131,7 @@ function LoaderCore() {
           <div style={{ position: 'relative', width: 100, height: 120, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end' }}>
             {/* Twemoji CDN - 모든 기기에서 동일한 이미지 */}
             <img
-              src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/svg/1f981.svg"
+              src="https://openmoji.org/data/color/svg/1F981.svg"
               alt="🦁"
               style={{
                 width: 80, height: 80,
