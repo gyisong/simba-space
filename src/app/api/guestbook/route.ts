@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { createHash } from 'crypto'
 
 function hashPassword(password: string): string {
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const ip_address = getIP(request)
     const password_hash = hashPassword(password)
 
-    const supabase = await createClient()
+    const supabase = createAdminClient()
     const { error } = await supabase.from('guestbook').insert({ name, message, ip_address, password_hash })
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
