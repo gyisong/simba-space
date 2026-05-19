@@ -5,26 +5,34 @@ import { usePathname, useSearchParams } from 'next/navigation'
 
 function LoaderCore() {
   const [visible, setVisible] = useState(false)
+  const [progress, setProgress] = useState(0)
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const startedRef = useRef(false)
-  const delayRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
-  const finishRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   function startLoader() {
-    clearTimeout(delayRef.current)
-    clearTimeout(finishRef.current)
+    clearInterval(intervalRef.current)
+    clearTimeout(timeoutRef.current)
     startedRef.current = true
-    // 200ms 딜레이: 빠른 전환엔 모달 안 뜸
-    delayRef.current = setTimeout(() => setVisible(true), 200)
+    setVisible(true)
+    setProgress(8)
+    let p = 8
+    intervalRef.current = setInterval(() => {
+      p += (88 - p) * 0.12 + Math.random() * 2
+      if (p >= 88) { p = 88; clearInterval(intervalRef.current) }
+      setProgress(p)
+    }, 180)
   }
 
   function finishLoader() {
-    clearTimeout(delayRef.current)
-    finishRef.current = setTimeout(() => {
+    clearInterval(intervalRef.current)
+    setProgress(100)
+    timeoutRef.current = setTimeout(() => {
       setVisible(false)
-      startedRef.current = false
-    }, 150)
+      setProgress(0)
+    }, 450)
   }
 
   useEffect(() => {
@@ -58,107 +66,61 @@ function LoaderCore() {
   return (
     <>
       <style>{`
-        @keyframes simbaJump {
-          0%   { transform: translateY(0px) rotate(0deg) scale(1); }
-          20%  { transform: translateY(-50px) rotate(-8deg) scale(1.1); }
-          40%  { transform: translateY(-70px) rotate(5deg) scale(1.15); }
-          60%  { transform: translateY(-40px) rotate(-3deg) scale(1.08); }
-          80%  { transform: translateY(-10px) rotate(2deg) scale(1.02); }
-          100% { transform: translateY(0px) rotate(0deg) scale(1); }
+        @keyframes simbaRun {
+          0%   { transform: translateY(0px)   rotate(-8deg) scale(1);    }
+          25%  { transform: translateY(-10px) rotate(0deg)  scale(1.1);  }
+          50%  { transform: translateY(-3px)  rotate(8deg)  scale(1.05); }
+          75%  { transform: translateY(-12px) rotate(0deg)  scale(1.1);  }
+          100% { transform: translateY(0px)   rotate(-8deg) scale(1);    }
         }
-        @keyframes simbaShadow {
-          0%   { transform: scaleX(1);    opacity: 0.25; }
-          40%  { transform: scaleX(0.35); opacity: 0.08; }
-          100% { transform: scaleX(1);    opacity: 0.25; }
-        }
-        @keyframes paw1 { 0%,60%,100% { opacity:0; } 10%,50% { opacity:1; } }
-        @keyframes paw2 { 0%,20%,80%,100% { opacity:0; } 30%,70% { opacity:1; } }
-        @keyframes paw3 { 0%,40%,100% { opacity:0; } 50%,90% { opacity:1; } }
-        @keyframes loaderFadeIn {
-          from { opacity: 0; }
-          to   { opacity: 1; }
-        }
-        @keyframes cardPop {
-          from { transform: scale(0.85); opacity: 0; }
-          to   { transform: scale(1);    opacity: 1; }
-        }
-        @keyframes dotBlink {
-          0%, 100% { opacity: 0.3; }
-          50%      { opacity: 1;   }
+        @keyframes pawBlink {
+          0%, 100% { opacity: 0.4; transform: scale(0.9); }
+          50%      { opacity: 1;   transform: scale(1.1); }
         }
       `}</style>
 
-      {/* 오버레이 */}
+      {/* 상단 프로그레스 바 */}
       <div style={{
-        position: 'fixed', inset: 0, zIndex: 9999,
-        background: 'rgba(74, 45, 64, 0.45)',
-        backdropFilter: 'blur(3px)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        animation: 'loaderFadeIn 0.2s ease',
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999,
+        height: 10, background: '#fce7f3', pointerEvents: 'none',
       }}>
-        {/* 카드 */}
         <div style={{
-          background: '#fff',
-          borderRadius: 32,
-          padding: '48px 56px 40px',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0,
-          boxShadow: '0 24px 60px rgba(74,45,64,0.25)',
-          animation: 'cardPop 0.25s cubic-bezier(0.34,1.56,0.64,1)',
-          minWidth: 240,
+          height: '100%',
+          width: `${progress}%`,
+          background: 'linear-gradient(90deg, #f9a8d4, #ec4899, #db2777)',
+          transition: progress === 100 ? 'width 0.25s ease' : 'width 0.35s ease-out',
+          borderRadius: '0 6px 6px 0',
+          position: 'relative',
+          boxShadow: '0 0 12px rgba(236,72,153,0.6)',
         }}>
-          {/* 발자국 장식 */}
-          <div style={{ display: 'flex', gap: 10, marginBottom: 8, height: 20, alignItems: 'center' }}>
-            {['paw1', 'paw2', 'paw3'].map((name, i) => (
-              <span key={i} style={{
-                fontSize: 16,
-                animation: `${name} 1.2s ease-in-out infinite`,
-                animationDelay: `${i * 0.15}s`,
-                opacity: 0,
-              }}>🐾</span>
-            ))}
-          </div>
-
-          {/* 심바 + 그림자 */}
-          <div style={{ position: 'relative', width: 100, height: 120, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end' }}>
-            <span style={{
-              fontSize: 72,
-              lineHeight: 1,
-              display: 'block',
-              animation: 'simbaJump 0.9s cubic-bezier(0.36,0.07,0.19,0.97) infinite',
-              filter: 'drop-shadow(0 8px 16px rgba(219,39,119,0.2))',
-              userSelect: 'none',
-              position: 'absolute',
-              bottom: 12,
-            }}>🦁</span>
-            {/* 바닥 그림자 */}
-            <div style={{
-              width: 60, height: 10,
-              background: 'radial-gradient(ellipse, rgba(74,45,64,0.35) 0%, transparent 70%)',
-              borderRadius: '50%',
-              animation: 'simbaShadow 0.9s ease-in-out infinite',
-              position: 'absolute',
-              bottom: 0,
-            }} />
-          </div>
-
-          {/* 텍스트 */}
-          <p style={{
-            margin: '20px 0 0', fontSize: 15, fontWeight: 700, color: '#4a2d40',
-            letterSpacing: '-0.3px',
-          }}>
-            심바가 달려오는 중
-            <span style={{ display: 'inline-flex', gap: 2, marginLeft: 2 }}>
-              {[0, 1, 2].map(i => (
-                <span key={i} style={{
-                  animation: 'dotBlink 1s ease-in-out infinite',
-                  animationDelay: `${i * 0.2}s`,
-                  color: '#e06b9a',
-                }}>.</span>
-              ))}
-            </span>
-          </p>
-          <p style={{ margin: '4px 0 0', fontSize: 12, color: '#c4a8b8' }}>잠시만 기다려주세요</p>
+          {/* 심바 */}
+          <span style={{
+            position: 'absolute',
+            right: -26,
+            top: -28,
+            fontSize: 40,
+            lineHeight: 1,
+            display: 'block',
+            animation: 'simbaRun 0.5s ease-in-out infinite',
+            filter: 'drop-shadow(0 3px 6px rgba(219,39,119,0.35))',
+            userSelect: 'none',
+          }}>🦁</span>
         </div>
+      </div>
+
+      {/* 우하단 토스트 */}
+      <div style={{
+        position: 'fixed', bottom: 20, right: 20, zIndex: 9999,
+        background: 'linear-gradient(135deg, #fce7f3, #fdf4ff)',
+        border: '1px solid #fda4c8',
+        borderRadius: 20, padding: '7px 16px',
+        display: 'flex', alignItems: 'center', gap: 7,
+        fontSize: 13, color: '#db2777', fontWeight: 600,
+        boxShadow: '0 4px 16px rgba(236,72,153,0.18)',
+        pointerEvents: 'none',
+      }}>
+        <span style={{ animation: 'pawBlink 0.6s ease-in-out infinite', display: 'inline-block' }}>🐾</span>
+        심바가 달려오는 중...
       </div>
     </>
   )
