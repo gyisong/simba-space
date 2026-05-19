@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Noto_Sans_KR } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
+import GlobalLoader from '@/components/GlobalLoader'
 
 const notoSansKR = Noto_Sans_KR({
   subsets: ['latin'],
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko" className={notoSansKR.variable}>
       <body style={{ margin: 0, fontFamily: 'var(--font-noto), sans-serif', background: '#fdf6f9', minHeight: '100vh' }}>
+        <GlobalLoader />
         <Header />
         <main>{children}</main>
       </body>
