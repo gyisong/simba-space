@@ -20,23 +20,27 @@ export default function GuestbookForm() {
     e.preventDefault()
     setLoading(true)
     setError('')
-    const res = await fetch('/api/guestbook', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, message, password }),
-    })
-    const data = await res.json()
-    if (!res.ok) {
-      setError(data.error ?? '오류가 발생했습니다.')
+    try {
+      const res = await fetch('/api/guestbook', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, message, password }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error ?? '오류가 발생했습니다.')
+        return
+      }
+      setDone(true)
+      setName('')
+      setMessage('')
+      setPassword('')
+      setTimeout(() => { setDone(false); window.location.reload() }, 1500)
+    } catch {
+      setError('네트워크 오류가 발생했습니다.')
+    } finally {
       setLoading(false)
-      return
     }
-    setDone(true)
-    setName('')
-    setMessage('')
-    setPassword('')
-    setLoading(false)
-    setTimeout(() => { setDone(false); window.location.reload() }, 1500)
   }
 
   return (

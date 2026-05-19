@@ -13,17 +13,21 @@ function getIP(request: Request): string {
 }
 
 export async function POST(request: Request) {
-  const { name, message, password } = await request.json()
-  if (!name || !message || !password) {
-    return NextResponse.json({ error: '이름, 메시지, 비밀번호를 입력해주세요.' }, { status: 400 })
+  try {
+    const { name, message, password } = await request.json()
+    if (!name || !message || !password) {
+      return NextResponse.json({ error: '이름, 메시지, 비밀번호를 입력해주세요.' }, { status: 400 })
+    }
+
+    const ip_address = getIP(request)
+    const password_hash = hashPassword(password)
+
+    const supabase = await createClient()
+    const { error } = await supabase.from('guestbook').insert({ name, message, ip_address, password_hash })
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ success: true })
+  } catch (e) {
+    return NextResponse.json({ error: String(e) }, { status: 500 })
   }
-
-  const ip_address = getIP(request)
-  const password_hash = hashPassword(password)
-
-  const supabase = await createClient()
-  const { error } = await supabase.from('guestbook').insert({ name, message, ip_address, password_hash })
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ success: true })
 }
