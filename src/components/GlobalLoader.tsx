@@ -10,20 +10,30 @@ function LoaderCore() {
   const startedRef = useRef(false)
   const delayRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const finishRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const safetyRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+
+  function hide() {
+    setVisible(false)
+    startedRef.current = false
+    clearTimeout(safetyRef.current)
+  }
 
   function startLoader() {
     clearTimeout(delayRef.current)
     clearTimeout(finishRef.current)
+    clearTimeout(safetyRef.current)
     startedRef.current = true
-    delayRef.current = setTimeout(() => setVisible(true), 200)
+    delayRef.current = setTimeout(() => {
+      setVisible(true)
+      // 안전장치: 3초 후 강제 종료 (pathname 변화 미감지 대비)
+      safetyRef.current = setTimeout(hide, 3000)
+    }, 200)
   }
 
   function finishLoader() {
     clearTimeout(delayRef.current)
-    finishRef.current = setTimeout(() => {
-      setVisible(false)
-      startedRef.current = false
-    }, 150)
+    clearTimeout(safetyRef.current)
+    finishRef.current = setTimeout(hide, 150)
   }
 
   useEffect(() => {
