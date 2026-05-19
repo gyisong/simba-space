@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Noto_Sans_KR } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
@@ -12,6 +12,10 @@ const notoSansKR = Noto_Sans_KR({
 export const metadata: Metadata = {
   title: "simba's space",
   description: 'NGO 사업 기획자 simba의 공간',
+}
+
+export const viewport: Viewport = {
+  colorScheme: 'light',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
