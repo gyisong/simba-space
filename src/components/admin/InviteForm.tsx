@@ -13,11 +13,11 @@ const label: React.CSSProperties = {
 
 export default function InviteForm() {
   const [open, setOpen] = useState(false)
-  const [form, setForm] = useState({ email: '', name: '', role: 'member' })
+  const [form, setForm] = useState({ email: '', name: '' })
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target
     setForm(prev => ({ ...prev, [name]: value }))
   }
@@ -30,14 +30,14 @@ export default function InviteForm() {
       const res = await fetch('/api/invite', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, role: 'member' }),
       })
       const data = await res.json()
       if (!res.ok) {
         setResult({ type: 'error', message: data.error ?? '오류가 발생했습니다.' })
       } else {
         setResult({ type: 'success', message: `${form.email}로 초대 메일을 보냈습니다.` })
-        setForm({ email: '', name: '', role: 'member' })
+        setForm({ email: '', name: '' })
         setTimeout(() => { setOpen(false); setResult(null); window.location.reload() }, 2000)
       }
     } catch {
@@ -71,7 +71,7 @@ export default function InviteForm() {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 14, marginBottom: 20 }}>
         <div>
           <label style={label}>이메일 *</label>
           <input type="email" name="email" value={form.email} onChange={handleChange} required style={input} placeholder="team@example.com" />
@@ -79,13 +79,6 @@ export default function InviteForm() {
         <div>
           <label style={label}>이름 *</label>
           <input name="name" value={form.name} onChange={handleChange} required style={input} placeholder="홍길동" />
-        </div>
-        <div>
-          <label style={label}>권한 *</label>
-          <select name="role" value={form.role} onChange={handleChange} style={{ ...input, background: '#fff' }}>
-            <option value="member">member</option>
-            <option value="admin">simba</option>
-          </select>
         </div>
       </div>
 

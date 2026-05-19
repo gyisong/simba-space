@@ -101,7 +101,7 @@ export default async function CalendarPage({
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {dayEvents.map(ev => {
                   const c = CATEGORY_COLORS[ev.category] ?? CATEGORY_COLORS['기타']
-                  const isOwn = ev.user_id === user.id
+                  const canDelete = ev.user_id === user.id || user.role === 'admin' || user.role === 'superadmin'
                   return (
                     <div key={ev.id} style={{ background: '#fff', borderRadius: 12, padding: '12px 18px', boxShadow: '0 2px 8px rgba(240,160,190,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
@@ -112,7 +112,7 @@ export default async function CalendarPage({
                         <span style={{ fontSize: 12, color: '#c4a8b8' }}>{nameMap[ev.user_id] ?? ''}</span>
                         {ev.note && <span style={{ fontSize: 12, color: '#9d7a8a' }}>· {ev.note}</span>}
                       </div>
-                      {isOwn && <DeleteCalendarEventButton id={ev.id} />}
+                      {canDelete && <DeleteCalendarEventButton id={ev.id} />}
                     </div>
                   )
                 })}

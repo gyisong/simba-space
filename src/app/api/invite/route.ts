@@ -8,10 +8,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: '권한 없음' }, { status: 403 })
   }
 
-  const { email, name, role } = await request.json()
+  const { email, name, role = 'member' } = await request.json()
 
-  if (!email || !name || !role) {
-    return NextResponse.json({ error: '이메일, 이름, 권한을 모두 입력해주세요.' }, { status: 400 })
+  if (!email || !name) {
+    return NextResponse.json({ error: '이메일과 이름을 입력해주세요.' }, { status: 400 })
   }
 
   const supabase = createAdminClient()
