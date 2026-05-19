@@ -26,7 +26,14 @@ export default function GuestbookForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, message, password }),
       })
-      const data = await res.json()
+      const text = await res.text()
+      let data: { error?: string; success?: boolean } = {}
+      try {
+        data = JSON.parse(text)
+      } catch {
+        setError(`서버 응답 오류 (${res.status}): ${text.slice(0, 200)}`)
+        return
+      }
       if (!res.ok) {
         setError(data.error ?? '오류가 발생했습니다.')
         return
@@ -36,8 +43,8 @@ export default function GuestbookForm() {
       setMessage('')
       setPassword('')
       setTimeout(() => { setDone(false); window.location.reload() }, 1500)
-    } catch {
-      setError('네트워크 오류가 발생했습니다.')
+    } catch (e) {
+      setError('fetch 오류: ' + String(e))
     } finally {
       setLoading(false)
     }
