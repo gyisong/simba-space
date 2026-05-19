@@ -1,11 +1,11 @@
 import { createClient } from '@/lib/supabase/server'
-import ToggleHiddenButton from '@/components/admin/ToggleHiddenButton'
+import AdminGuestbookEntry from '@/components/admin/AdminGuestbookEntry'
 
 export default async function AdminGuestbookPage() {
   const supabase = await createClient()
   const { data: entries } = await supabase
     .from('guestbook')
-    .select('*')
+    .select('id, name, message, created_at, is_hidden, ip_address')
     .order('created_at', { ascending: false })
 
   return (
@@ -22,22 +22,7 @@ export default async function AdminGuestbookPage() {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {entries.map(e => (
-            <div key={e.id} style={{
-              background: '#fff', borderRadius: 14, padding: '16px 20px',
-              boxShadow: '0 2px 8px rgba(240,160,190,0.07)',
-              opacity: e.is_hidden ? 0.55 : 1,
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontWeight: 700, fontSize: 14, color: '#4a2d40' }}>{e.name}</span>
-                  <span style={{ fontSize: 12, color: '#c4a8b8' }}>
-                    {new Date(e.created_at).toLocaleDateString('ko-KR')}
-                  </span>
-                </div>
-                <ToggleHiddenButton id={e.id} isHidden={e.is_hidden} />
-              </div>
-              <p style={{ margin: 0, fontSize: 13, color: '#5c4a5a', lineHeight: 1.7 }}>{e.message}</p>
-            </div>
+            <AdminGuestbookEntry key={e.id} entry={e} />
           ))}
         </div>
       )}
