@@ -115,32 +115,22 @@ function LoaderCore() {
           {/* 발자국 */}
           <div style={{ display: 'flex', gap: 10, marginBottom: 8, height: 20, alignItems: 'center' }}>
             {(['paw1','paw2','paw3'] as const).map((name, i) => (
-              <img key={i}
-                src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Paw%20prints/3D/paw_prints_3d.png"
-                alt="🐾"
-                style={{
-                  width: 18, height: 18, opacity: 0,
-                  animation: `${name} 1.2s ease-in-out infinite`,
-                  animationDelay: `${i * 0.15}s`,
-                }}
-              />
+              <span key={i} style={{
+                fontSize: 16, opacity: 0,
+                animation: `${name} 1.2s ease-in-out infinite`,
+                animationDelay: `${i * 0.15}s`,
+              }}>🐾</span>
             ))}
           </div>
 
           {/* 심바 + 그림자 */}
           <div style={{ position: 'relative', width: 100, height: 120, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end' }}>
-            {/* Twemoji CDN - 모든 기기에서 동일한 이미지 */}
-            <img
-              src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Lion/3D/lion_3d.png"
-              alt="🦁"
-              style={{
-                width: 80, height: 80,
-                display: 'block', position: 'absolute', bottom: 12,
-                animation: 'simbaJump 0.9s cubic-bezier(0.36,0.07,0.19,0.97) infinite',
-                filter: 'drop-shadow(0 8px 16px rgba(219,39,119,0.2))',
-                userSelect: 'none',
-              }}
-            />
+            <span style={{
+              fontSize: 72, lineHeight: 1, userSelect: 'none',
+              display: 'block', position: 'absolute', bottom: 12,
+              animation: 'simbaJump 0.9s cubic-bezier(0.36,0.07,0.19,0.97) infinite',
+              filter: 'drop-shadow(0 8px 16px rgba(219,39,119,0.2))',
+            }}>🦁</span>
             <div style={{
               width: 60, height: 10,
               background: 'radial-gradient(ellipse, rgba(74,45,64,0.35) 0%, transparent 70%)',
