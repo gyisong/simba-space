@@ -115,22 +115,32 @@ function LoaderCore() {
           {/* 발자국 */}
           <div style={{ display: 'flex', gap: 10, marginBottom: 8, height: 20, alignItems: 'center' }}>
             {(['paw1','paw2','paw3'] as const).map((name, i) => (
-              <span key={i} style={{
-                fontSize: 16, opacity: 0,
-                animation: `${name} 1.2s ease-in-out infinite`,
-                animationDelay: `${i * 0.15}s`,
-              }}>🐾</span>
+              <img key={i}
+                src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/svg/1f43e.svg"
+                alt="🐾"
+                style={{
+                  width: 18, height: 18, opacity: 0,
+                  animation: `${name} 1.2s ease-in-out infinite`,
+                  animationDelay: `${i * 0.15}s`,
+                }}
+              />
             ))}
           </div>
 
           {/* 심바 + 그림자 */}
           <div style={{ position: 'relative', width: 100, height: 120, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end' }}>
-            <span style={{
-              fontSize: 72, lineHeight: 1, userSelect: 'none',
-              display: 'block', position: 'absolute', bottom: 12,
-              animation: 'simbaJump 0.9s cubic-bezier(0.36,0.07,0.19,0.97) infinite',
-              filter: 'drop-shadow(0 8px 16px rgba(219,39,119,0.2))',
-            }}>🦁</span>
+            {/* Twemoji CDN - 모든 기기에서 동일한 이미지 */}
+            <img
+              src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/svg/1f981.svg"
+              alt="🦁"
+              style={{
+                width: 80, height: 80,
+                display: 'block', position: 'absolute', bottom: 12,
+                animation: 'simbaJump 0.9s cubic-bezier(0.36,0.07,0.19,0.97) infinite',
+                filter: 'drop-shadow(0 8px 16px rgba(219,39,119,0.2))',
+                userSelect: 'none',
+              }}
+            />
             <div style={{
               width: 60, height: 10,
               background: 'radial-gradient(ellipse, rgba(74,45,64,0.35) 0%, transparent 70%)',
