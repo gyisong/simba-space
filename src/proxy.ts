@@ -29,7 +29,8 @@ export async function proxy(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   const pathname = request.nextUrl.pathname
-  const isPublic = PUBLIC_PATHS.some(p => pathname === p || pathname.startsWith('/portfolio/'))
+  const isPublic = pathname.startsWith('/api/') || pathname.startsWith('/auth/')
+    || PUBLIC_PATHS.some(p => pathname === p || pathname.startsWith('/portfolio/'))
 
   // 비로그인 + 비공개 경로 → 로그인 페이지로
   if (!user && !isPublic) {
