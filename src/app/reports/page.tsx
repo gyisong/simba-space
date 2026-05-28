@@ -93,7 +93,10 @@ export default async function ReportsPage({
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-          {Array.from(byWeek.entries()).map(([week, weekReports]) => (
+          {Array.from(byWeek.entries()).map(([week, weekReports]) => {
+            const periodEnd = weekReports[0].period_end
+            const isClosed = periodEnd < today
+            return (
             <div key={week}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
                 <span style={{
@@ -103,6 +106,15 @@ export default async function ReportsPage({
                 }}>
                   {week}주차
                 </span>
+                {isClosed ? (
+                  <span style={{ fontSize: 12, color: '#9d7a8a', background: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: 20, padding: '3px 10px' }}>
+                    🔒 마감 · ~{periodEnd}
+                  </span>
+                ) : (
+                  <span style={{ fontSize: 12, color: '#16a34a', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 20, padding: '3px 10px' }}>
+                    ✏️ 제출 가능 · ~{periodEnd}
+                  </span>
+                )}
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingLeft: 8, borderLeft: '2px solid #ffd6e7' }}>
@@ -157,7 +169,8 @@ export default async function ReportsPage({
                 ))}
               </div>
             </div>
-          ))}
+            )
+          })}
         </div>
       )}
     </div>
