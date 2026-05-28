@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-export default function GuestbookDeleteButton({ id, isAdmin }: { id: string; isAdmin: boolean }) {
+export default function GuestbookDeleteButton({ id, isAdmin, hasPassword }: { id: string; isAdmin: boolean; hasPassword: boolean }) {
+  if (!isAdmin && !hasPassword) return null
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [password, setPassword] = useState('')

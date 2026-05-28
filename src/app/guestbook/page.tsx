@@ -15,7 +15,7 @@ export default async function GuestbookPage() {
   const [{ data: entries }, user] = await Promise.all([
     supabase
       .from('guestbook')
-      .select('id, name, message, created_at, ip_address')
+      .select('id, name, message, created_at, ip_address, password_hash')
       .eq('is_hidden', false)
       .order('created_at', { ascending: false }),
     getCurrentUser(),
@@ -49,7 +49,7 @@ export default async function GuestbookPage() {
                     <span style={{ fontSize: 11, color: '#d4a8b8' }}>{maskedIP}</span>
                   )}
                 </div>
-                <GuestbookDeleteButton id={entry.id} isAdmin={isAdmin} />
+                <GuestbookDeleteButton id={entry.id} isAdmin={isAdmin} hasPassword={!!entry.password_hash} />
               </div>
               <p style={{ margin: 0, fontSize: 14, color: '#5c4a5a', lineHeight: 1.7 }}>{entry.message}</p>
             </div>
