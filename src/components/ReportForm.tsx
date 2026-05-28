@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { getMondayOf, getSundayOf } from '@/lib/week'
 
 const input: React.CSSProperties = {
   width: '100%', padding: '10px 14px', border: '1px solid #ffd6e7',
@@ -12,19 +13,6 @@ const label: React.CSSProperties = {
   display: 'block', fontSize: 13, fontWeight: 600, color: '#7c5c6e', marginBottom: 6,
 }
 
-function getMondayOf(dateStr: string): string {
-  const d = new Date(dateStr)
-  const day = d.getDay()
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1)
-  d.setDate(diff)
-  return d.toISOString().slice(0, 10)
-}
-
-function getSundayOf(mondayStr: string): string {
-  const d = new Date(mondayStr)
-  d.setDate(d.getDate() + 6)
-  return d.toISOString().slice(0, 10)
-}
 
 interface ReportFormProps {
   userId: string
