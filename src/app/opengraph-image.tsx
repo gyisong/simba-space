@@ -42,14 +42,21 @@ export default function OGImage() {
           padding: '56px 80px',
           boxShadow: '0 8px 40px rgba(240,160,190,0.2)',
         }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://simba-space.vercel.app/lion.png"
-            width={100}
-            height={100}
-            alt="lion"
-            style={{ marginBottom: 24 }}
-          />
+          <div style={{
+            width: 110, height: 110, borderRadius: '50%',
+            overflow: 'hidden', marginBottom: 24,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'linear-gradient(135deg, #f472b6, #c084fc)',
+          }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://simba-space.vercel.app/lion.png"
+              width={110}
+              height={110}
+              alt="lion"
+              style={{ objectFit: 'cover' }}
+            />
+          </div>
           <div style={{
             fontSize: 52, fontWeight: 700, color: '#4a2d40',
             marginBottom: 14, display: 'flex',
