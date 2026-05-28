@@ -12,7 +12,7 @@ export default function GuestbookForm() {
   const [done, setDone] = useState(false)
   const [error, setError] = useState('')
 
-  const input: React.CSSProperties = {
+  const inputStyle: React.CSSProperties = {
     width: '100%', padding: '10px 14px', border: '1px solid #ffd6e7',
     borderRadius: 10, fontSize: 14, outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
     color: '#2d1f29',
@@ -45,7 +45,7 @@ export default function GuestbookForm() {
       setMessage('')
       setPassword('')
       router.refresh()
-      setTimeout(() => setDone(false), 1500)
+      setTimeout(() => setDone(false), 2000)
     } catch (e) {
       setError('fetch 오류: ' + String(e))
     } finally {
@@ -61,18 +61,34 @@ export default function GuestbookForm() {
           {error}
         </div>
       )}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: 10, marginBottom: 12 }}>
-        <input value={name} onChange={e => setName(e.target.value)} required placeholder="이름" autoComplete="off" style={input} />
-        <input value={message} onChange={e => setMessage(e.target.value)} required placeholder="메시지를 남겨주세요 🌸" autoComplete="off" style={input} />
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="비밀번호" autoComplete="new-password" style={input} />
+      {done && (
+        <div style={{ background: '#fdf2f8', border: '1px solid #ffd6e7', color: '#db2777', borderRadius: 8, padding: '8px 12px', fontSize: 13, marginBottom: 12 }}>
+          ✓ 등록됐어요! 🌸
+        </div>
+      )}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
+        <input value={name} onChange={e => setName(e.target.value)} required placeholder="이름" autoComplete="off" style={inputStyle} />
+        <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="비밀번호 (삭제 시 사용)" autoComplete="new-password" style={inputStyle} />
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ fontSize: 12, color: '#c4a8b8' }}>비밀번호는 나중에 삭제할 때 사용됩니다.</span>
+      <textarea
+        value={message}
+        onChange={e => setMessage(e.target.value)}
+        required
+        placeholder="메시지를 남겨주세요 🌸"
+        autoComplete="off"
+        rows={3}
+        style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, marginBottom: 12 }}
+      />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
         <button type="submit" disabled={loading}
-          style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #f472b6, #db2777)', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 14, cursor: 'pointer', opacity: loading ? 0.6 : 1 }}>
-          {done ? '✓ 등록됐어요!' : loading ? '등록 중...' : '남기기'}
+          style={{ padding: '10px 24px', background: loading ? '#f9a8d4' : 'linear-gradient(135deg, #f472b6, #db2777)', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 14, cursor: loading ? 'not-allowed' : 'pointer', transition: 'background 0.2s', display: 'flex', alignItems: 'center', gap: 6 }}>
+          {loading && (
+            <span style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.4)', borderTopColor: '#fff', borderRadius: '50%', display: 'inline-block', animation: 'spin 0.7s linear infinite' }} />
+          )}
+          {loading ? '등록 중...' : '남기기'}
         </button>
       </div>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </form>
   )
 }
