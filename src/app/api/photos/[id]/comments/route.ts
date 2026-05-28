@@ -13,12 +13,12 @@ export async function POST(
 ) {
   const { id: photo_id } = await params
   try {
-    const { name, message, password, parent_id } = await request.json()
     const user = await getCurrentUser()
-    const isLoggedIn = !!user
+    if (!user) return NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 })
 
-    if (!name || !message || (!isLoggedIn && !password)) {
-      return NextResponse.json({ error: '이름, 메시지, 비밀번호를 입력해주세요.' }, { status: 400 })
+    const { name, message, parent_id } = await request.json()
+    if (!name || !message) {
+      return NextResponse.json({ error: '이름과 메시지를 입력해주세요.' }, { status: 400 })
     }
 
     const supabase = createAdminClient()
@@ -27,7 +27,7 @@ export async function POST(
       parent_id: parent_id ?? null,
       name,
       message,
-      password_hash: password ? hashPassword(password) : null,
+      password_hash: null,
     })
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })

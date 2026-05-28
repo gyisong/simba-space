@@ -47,6 +47,15 @@ export default function PhotoCommentForm({ photoId, parentId, isLoggedIn, userNa
     }
   }
 
+  if (!isLoggedIn) {
+    return (
+      <div style={{ background: '#fdf2f8', border: '1px solid #ffd6e7', borderRadius: 10, padding: '14px 16px', fontSize: 13, color: '#9d7a8a', textAlign: 'center' }}>
+        댓글은 로그인 후 남길 수 있어요 🌸 &nbsp;
+        <a href="/login" style={{ color: '#db2777', fontWeight: 600, textDecoration: 'none' }}>로그인하기</a>
+      </div>
+    )
+  }
+
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       {error && (
