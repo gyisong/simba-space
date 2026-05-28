@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     url: 'https://simba-space.vercel.app',
     images: [
       {
-        url: 'https://simba-space.vercel.app/og-image-v2.png',
+        url: 'https://simba-space.vercel.app/og-image-v3.png',
         width: 1200,
         height: 630,
         alt: "simba's space",
