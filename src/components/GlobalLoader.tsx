@@ -130,6 +130,7 @@ function LoaderCore() {
               animation: 'simbaJump 0.9s cubic-bezier(0.36,0.07,0.19,0.97) infinite',
               filter: 'drop-shadow(0 8px 16px rgba(219,39,119,0.2))',
               objectFit: 'contain',
+              mixBlendMode: 'multiply',
             }} />
             <div style={{
               width: 60, height: 10,
