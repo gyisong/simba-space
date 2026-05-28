@@ -28,6 +28,7 @@ export default function NavLinks({ showReports, showCalendar, showAdmin, showAnn
   return (
     <>
       <Link href="/portfolio" style={linkStyle('/portfolio')}>포트폴리오</Link>
+      <Link href="/photos" style={linkStyle('/photos')}>사진첩</Link>
       <Link href="/guestbook" style={linkStyle('/guestbook')}>방명록</Link>
       <Link href="/contact" style={linkStyle('/contact')}>문의</Link>
       {showAnnouncements && <Link href="/announcements" style={linkStyle('/announcements')}>공지사항</Link>}

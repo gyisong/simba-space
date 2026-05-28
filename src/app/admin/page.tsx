@@ -6,14 +6,16 @@ export default async function AdminDashboardPage() {
   const user = await getCurrentUser()
   const supabase = await createClient()
 
-  const [{ count: projectCount }, { count: messageCount }, { count: guestbookCount }] = await Promise.all([
+  const [{ count: projectCount }, { count: messageCount }, { count: guestbookCount }, { count: photoCount }] = await Promise.all([
     supabase.from('projects').select('*', { count: 'exact', head: true }),
     supabase.from('contact_messages').select('*', { count: 'exact', head: true }).eq('is_read', false),
     supabase.from('guestbook').select('*', { count: 'exact', head: true }),
+    supabase.from('photos').select('*', { count: 'exact', head: true }),
   ])
 
   const cards = [
     { href: '/admin/projects', emoji: '🌿', title: '사업 관리', desc: `${projectCount ?? 0}개 등록됨`, color: '#fdf2f8' },
+    { href: '/admin/photos', emoji: '📷', title: '사진첩', desc: `${photoCount ?? 0}장`, color: '#fce7f3' },
     { href: '/admin/messages', emoji: '💬', title: '문의 메시지', desc: `미확인 ${messageCount ?? 0}건`, color: '#fce7f3' },
     { href: '/admin/guestbook', emoji: '🌸', title: '방명록 관리', desc: `${guestbookCount ?? 0}개`, color: '#fdf4ff' },
     { href: '/admin/announcements', emoji: '📢', title: '공지사항', desc: '팀 공지 관리', color: '#fef9c3' },
