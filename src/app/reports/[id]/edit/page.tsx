@@ -2,6 +2,7 @@ import { redirect, notFound } from 'next/navigation'
 import { getCurrentUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import ReportForm from '@/components/ReportForm'
+import { getMondayOf, getSundayOf, isWeekClosed } from '@/lib/week'
 
 export default async function EditReportPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -20,13 +21,8 @@ export default async function EditReportPage({ params }: { params: Promise<{ id:
 
   const isAdmin = user.role === 'superadmin' || user.role === 'admin'
   const today = new Date().toISOString().slice(0, 10)
-
-  // period_start 기준 해당 주 일요일이 지났으면 마감
-  const d = new Date(report.period_start)
-  const day = d.getDay()
-  d.setDate(d.getDate() - (day === 0 ? 6 : day - 1) + 6) // 해당 주 일요일
-  const sundayOfWeek = d.toISOString().slice(0, 10)
-  const isClosed = sundayOfWeek < today
+  const sundayOfWeek = getSundayOf(getMondayOf(report.period_start))
+  const isClosed = isWeekClosed(report.period_start, today)
 
   if (isClosed && !isAdmin) {
     return (

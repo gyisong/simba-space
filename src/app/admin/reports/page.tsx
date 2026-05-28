@@ -3,28 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import DeleteReportButton from '@/components/admin/DeleteReportButton'
 import ReportMonthFilter from '@/components/ReportMonthFilter'
 import ReportFeedbackForm from '@/components/admin/ReportFeedbackForm'
-
-function getMondayOf(dateStr: string): string {
-  const d = new Date(dateStr)
-  const day = d.getDay()
-  d.setDate(d.getDate() - (day === 0 ? 6 : day - 1))
-  return d.toISOString().slice(0, 10)
-}
-
-function getSundayOf(mondayStr: string): string {
-  const d = new Date(mondayStr)
-  d.setDate(d.getDate() + 6)
-  return d.toISOString().slice(0, 10)
-}
-
-function formatWeekLabel(mondayStr: string, sundayStr: string): string {
-  const DAYS = ['일', '월', '화', '수', '목', '금', '토']
-  const fmt = (s: string) => {
-    const d = new Date(s)
-    return `${d.getMonth() + 1}/${d.getDate()}(${DAYS[d.getDay()]})`
-  }
-  return `${fmt(mondayStr)} ~ ${fmt(sundayStr)}`
-}
+import { getMondayOf, getSundayOf, formatWeekLabel } from '@/lib/week'
 
 export default async function AdminReportsPage({
   searchParams,
