@@ -12,7 +12,7 @@ const labelStyle: React.CSSProperties = {
   display: 'block', fontSize: 13, fontWeight: 600, color: '#7c5c6e', marginBottom: 6,
 }
 
-export default function NicknameForm({ currentName }: { currentName: string }) {
+export default function NicknameForm({ currentName, disabled = false }: { currentName: string; disabled?: boolean }) {
   const router = useRouter()
   const [name, setName] = useState(currentName)
   const [loading, setLoading] = useState(false)
@@ -54,13 +54,14 @@ export default function NicknameForm({ currentName }: { currentName: string }) {
       )}
       <div>
         <label style={labelStyle}>닉네임 *</label>
-        <input value={name} onChange={e => setName(e.target.value)} required maxLength={20} placeholder="닉네임을 입력하세요" style={inputStyle} />
+        <input value={name} onChange={e => setName(e.target.value)} required maxLength={20} placeholder="닉네임을 입력하세요"
+          readOnly={disabled} style={{ ...inputStyle, background: disabled ? '#fdf9fb' : undefined, color: disabled ? '#b8a0b0' : undefined }} />
       </div>
-      <button type="submit" disabled={loading} style={{
+      <button type="submit" disabled={loading || disabled} style={{
         width: '100%', padding: '13px',
-        background: loading ? '#f9a8d4' : 'linear-gradient(135deg, #f472b6, #db2777)',
-        border: 'none', borderRadius: 12, color: '#fff', fontWeight: 700, fontSize: 15,
-        cursor: loading ? 'not-allowed' : 'pointer', fontFamily: 'inherit',
+        background: disabled ? '#f3e8ef' : loading ? '#f9a8d4' : 'linear-gradient(135deg, #f472b6, #db2777)',
+        border: 'none', borderRadius: 12, color: disabled ? '#c4a8b8' : '#fff', fontWeight: 700, fontSize: 15,
+        cursor: (loading || disabled) ? 'not-allowed' : 'pointer', fontFamily: 'inherit',
       }}>
         {loading ? '저장 중...' : '저장'}
       </button>

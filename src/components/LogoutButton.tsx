@@ -16,7 +16,7 @@ export default function LogoutButton({ name }: { name: string }) {
         href="/settings"
         style={{ background: 'none', border: '1px solid #ffd6e7', color: '#9d7a8a', padding: '4px 12px', borderRadius: 20, fontSize: 13, cursor: 'pointer', textDecoration: 'none' }}
       >
-        비밀번호 변경
+        정보변경
       </a>
       <button
         onClick={handleLogout}
