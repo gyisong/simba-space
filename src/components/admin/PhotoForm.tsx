@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
 
 export default function PhotoForm() {
   const [title, setTitle] = useState('')
@@ -29,18 +28,14 @@ export default function PhotoForm() {
     setLoading(true)
     setError('')
     try {
-      const supabase = createClient()
-      const ext = file.name.split('.').pop()
-      const filename = `photo-${Date.now()}.${ext}`
-      const { data: up, error: upErr } = await supabase.storage.from('photos').upload(filename, file, { upsert: true })
-      if (upErr) { setError(upErr.message); return }
-      const { data: urlData } = supabase.storage.from('photos').getPublicUrl(up.path)
-      const { error: dbErr } = await supabase.from('photos').insert({
-        title: title || null,
-        description: description || null,
-        image_url: urlData.publicUrl,
-      })
-      if (dbErr) { setError(dbErr.message); return }
+      const formData = new FormData()
+      formData.append('file', file)
+      if (title) formData.append('title', title)
+      if (description) formData.append('description', description)
+
+      const res = await fetch('/api/photos', { method: 'POST', body: formData })
+      const data = await res.json()
+      if (!res.ok) { setError(data.error ?? '오류가 발생했습니다.'); return }
       window.location.href = '/admin/photos'
     } catch (e) {
       setError(String(e))
@@ -57,11 +52,9 @@ export default function PhotoForm() {
         </div>
       )}
 
-      {/* 이미지 선택 */}
       <div style={{ marginBottom: 16 }}>
         <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#7c5c6e', marginBottom: 8 }}>사진 *</label>
-        <input type="file" accept="image/*" onChange={handleFileChange} required
-          style={{ fontSize: 13, color: '#4a2d40' }} />
+        <input type="file" accept="image/*" onChange={handleFileChange} required style={{ fontSize: 13, color: '#4a2d40' }} />
         {preview && (
           <img src={preview} alt="미리보기" style={{ marginTop: 12, maxWidth: '100%', maxHeight: 300, borderRadius: 10, objectFit: 'contain', border: '1px solid #ffd6e7' }} />
         )}

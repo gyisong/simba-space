@@ -37,9 +37,9 @@ body {
 
 .header-nav {
   display: flex;
-  gap: 16px;
+  gap: 10px;
   align-items: center;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 /* 2열 그리드 (홈 최근사업/방명록 등) */
