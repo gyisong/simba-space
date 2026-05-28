@@ -110,7 +110,7 @@ export default function ReportForm({ userId, reportId, initialData }: ReportForm
       )}
       <div style={{ marginBottom: 16 }}>
         <label style={label}>사업명 *</label>
-        <input name="project_name" value={form.project_name} onChange={handleChange} required style={input} placeholder="관련 사업명" />
+        <input name="project_name" value={form.project_name} onChange={handleChange} required maxLength={100} style={input} placeholder="관련 사업명" />
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
         <div>
@@ -124,17 +124,17 @@ export default function ReportForm({ userId, reportId, initialData }: ReportForm
       </div>
       <div style={{ marginBottom: 16 }}>
         <label style={label}>이번 주 활동 *</label>
-        <textarea name="activities" value={form.activities} onChange={handleChange} required rows={4}
+        <textarea name="activities" value={form.activities} onChange={handleChange} required rows={4} maxLength={3000}
           style={{ ...input, resize: 'vertical', lineHeight: 1.8 }} placeholder="이번 주에 진행한 활동을 입력하세요" />
       </div>
       <div style={{ marginBottom: 16 }}>
         <label style={label}>다음 주 계획 *</label>
-        <textarea name="next_plan" value={form.next_plan} onChange={handleChange} required rows={3}
+        <textarea name="next_plan" value={form.next_plan} onChange={handleChange} required rows={3} maxLength={3000}
           style={{ ...input, resize: 'vertical', lineHeight: 1.8 }} placeholder="다음 주 예정 활동을 입력하세요" />
       </div>
       <div style={{ marginBottom: 28 }}>
         <label style={label}>이슈 / 건의사항</label>
-        <textarea name="issues" value={form.issues} onChange={handleChange} rows={2}
+        <textarea name="issues" value={form.issues} onChange={handleChange} rows={2} maxLength={1000}
           style={{ ...input, resize: 'vertical', lineHeight: 1.8 }} placeholder="이슈나 건의사항 (선택)" />
       </div>
       <div style={{ display: 'flex', gap: 12 }}>

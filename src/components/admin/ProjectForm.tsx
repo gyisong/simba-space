@@ -109,9 +109,9 @@ export default function ProjectForm({ project }: { project?: Project }) {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
         <div><label style={label}>사업명 *</label>
-          <input name="title" value={form.title} onChange={handleChange} required style={input} placeholder="사업명" /></div>
+          <input name="title" value={form.title} onChange={handleChange} required maxLength={200} style={input} placeholder="사업명" /></div>
         <div><label style={label}>지역 *</label>
-          <input name="region" value={form.region} onChange={handleChange} required style={input} placeholder="예: 몽골 울란바토르" /></div>
+          <input name="region" value={form.region} onChange={handleChange} required maxLength={100} style={input} placeholder="예: 몽골 울란바토르" /></div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
@@ -123,17 +123,17 @@ export default function ProjectForm({ project }: { project?: Project }) {
 
       <div style={{ marginBottom: 16 }}>
         <label style={label}>파트너 기업 *</label>
-        <input name="partner_company" value={form.partner_company} onChange={handleChange} required style={input} placeholder="예: KT&G" />
+        <input name="partner_company" value={form.partner_company} onChange={handleChange} required maxLength={100} style={input} placeholder="예: KT&G" />
       </div>
 
       <div style={{ marginBottom: 16 }}>
         <label style={label}>임팩트 *</label>
-        <input name="impact_text" value={form.impact_text} onChange={handleChange} required style={input} placeholder="예: 수혜자 200명, 봉사단원 30명" />
+        <input name="impact_text" value={form.impact_text} onChange={handleChange} required maxLength={200} style={input} placeholder="예: 수혜자 200명, 봉사단원 30명" />
       </div>
 
       <div style={{ marginBottom: 16 }}>
         <label style={label}>상세 설명 *</label>
-        <textarea name="description" value={form.description} onChange={handleChange} required rows={5}
+        <textarea name="description" value={form.description} onChange={handleChange} required rows={5} maxLength={5000}
           style={{ ...input, resize: 'vertical', lineHeight: 1.7 }} placeholder="사업 상세 설명을 입력하세요" />
       </div>
 

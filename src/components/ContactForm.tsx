@@ -38,13 +38,13 @@ export default function ContactForm() {
     <form onSubmit={handleSubmit} style={{ background: '#fff', borderRadius: 20, padding: 32, boxShadow: '0 2px 16px rgba(240,160,190,0.12)' }}>
       <div className="grid-2col-contact">
         <div><label style={label}>이름 *</label>
-          <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required style={input} placeholder="이름" /></div>
+          <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required maxLength={50} style={input} placeholder="이름" /></div>
         <div><label style={label}>이메일 *</label>
-          <input type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} required style={input} placeholder="이메일 주소" /></div>
+          <input type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} required maxLength={255} style={input} placeholder="이메일 주소" /></div>
       </div>
       <div style={{ marginBottom: 20 }}>
         <label style={label}>메시지 *</label>
-        <textarea value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} required rows={5}
+        <textarea value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} required rows={5} maxLength={2000}
           style={{ ...input, resize: 'vertical', lineHeight: 1.7 }} placeholder="문의 내용을 입력해주세요" />
       </div>
       <button type="submit" disabled={loading}

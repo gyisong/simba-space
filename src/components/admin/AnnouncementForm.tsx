@@ -54,11 +54,11 @@ export default function AnnouncementForm({ authorId }: { authorId: string }) {
       )}
       <div style={{ marginBottom: 14 }}>
         <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#7c5c6e', marginBottom: 6 }}>제목 *</label>
-        <input value={title} onChange={e => setTitle(e.target.value)} required style={input} placeholder="공지 제목" />
+        <input value={title} onChange={e => setTitle(e.target.value)} required maxLength={200} style={input} placeholder="공지 제목" />
       </div>
       <div style={{ marginBottom: 14 }}>
         <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#7c5c6e', marginBottom: 6 }}>내용 *</label>
-        <textarea value={content} onChange={e => setContent(e.target.value)} required rows={4}
+        <textarea value={content} onChange={e => setContent(e.target.value)} required rows={4} maxLength={3000}
           style={{ ...input, resize: 'vertical', lineHeight: 1.7 }} placeholder="공지 내용" />
       </div>
       <div style={{ marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>

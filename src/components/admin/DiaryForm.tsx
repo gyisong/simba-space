@@ -63,11 +63,11 @@ export default function DiaryForm({ diary }: { diary?: Diary }) {
       )}
       <div style={{ marginBottom: 16 }}>
         <label style={label}>제목 *</label>
-        <input name="title" value={form.title} onChange={handleChange} required style={input} placeholder="제목을 입력하세요" />
+        <input name="title" value={form.title} onChange={handleChange} required maxLength={200} style={input} placeholder="제목을 입력하세요" />
       </div>
       <div style={{ marginBottom: 16 }}>
         <label style={label}>내용 *</label>
-        <textarea name="content" value={form.content} onChange={handleChange} required rows={12}
+        <textarea name="content" value={form.content} onChange={handleChange} required rows={12} maxLength={10000}
           style={{ ...input, resize: 'vertical', lineHeight: 1.8 }} placeholder="오늘의 기록을 남겨보세요..." />
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 28 }}>

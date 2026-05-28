@@ -30,6 +30,7 @@ export default function MessageReplyForm({ messageId, initialReply }: { messageI
         onChange={e => setReply(e.target.value)}
         placeholder="답변 내용을 입력하세요 (비우면 답변 삭제)"
         rows={3}
+        maxLength={2000}
         style={{
           width: '100%', padding: '10px 12px', border: '1px solid #ffd6e7',
           borderRadius: 8, fontSize: 13, outline: 'none', fontFamily: 'inherit',

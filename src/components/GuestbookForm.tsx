@@ -67,8 +67,8 @@ export default function GuestbookForm() {
         </div>
       )}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
-        <input value={name} onChange={e => setName(e.target.value)} required placeholder="이름" autoComplete="off" style={inputStyle} />
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="비밀번호 (삭제 시 사용)" autoComplete="new-password" style={inputStyle} />
+        <input value={name} onChange={e => setName(e.target.value)} required placeholder="이름" autoComplete="off" maxLength={50} style={inputStyle} />
+        <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="비밀번호 (삭제 시 사용)" autoComplete="new-password" maxLength={100} style={inputStyle} />
       </div>
       <textarea
         value={message}
@@ -77,6 +77,7 @@ export default function GuestbookForm() {
         placeholder="메시지를 남겨주세요 🌸"
         autoComplete="off"
         rows={3}
+        maxLength={500}
         style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, marginBottom: 12 }}
       />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>

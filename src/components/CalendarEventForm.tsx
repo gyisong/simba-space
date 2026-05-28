@@ -61,7 +61,7 @@ export default function CalendarEventForm({ userId }: { userId: string }) {
       <div className="grid-3col-form">
         <div>
           <label style={label}>제목 *</label>
-          <input name="title" value={form.title} onChange={handleChange} required style={input} placeholder="일정 제목" />
+          <input name="title" value={form.title} onChange={handleChange} required maxLength={100} style={input} placeholder="일정 제목" />
         </div>
         <div>
           <label style={label}>날짜 *</label>
@@ -76,7 +76,7 @@ export default function CalendarEventForm({ userId }: { userId: string }) {
       </div>
       <div style={{ marginBottom: 20 }}>
         <label style={label}>메모</label>
-        <input name="note" value={form.note} onChange={handleChange} style={input} placeholder="메모 (선택)" />
+        <input name="note" value={form.note} onChange={handleChange} maxLength={200} style={input} placeholder="메모 (선택)" />
       </div>
       <div style={{ display: 'flex', gap: 10 }}>
         <button type="submit" disabled={loading}
