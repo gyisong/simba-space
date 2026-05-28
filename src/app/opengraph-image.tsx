@@ -42,7 +42,14 @@ export default function OGImage() {
           padding: '56px 80px',
           boxShadow: '0 8px 40px rgba(240,160,190,0.2)',
         }}>
-          <div style={{ fontSize: 80, marginBottom: 24, display: 'flex' }}>🦁</div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f981.svg"
+            width={100}
+            height={100}
+            alt="lion"
+            style={{ marginBottom: 24 }}
+          />
           <div style={{
             fontSize: 52, fontWeight: 700, color: '#4a2d40',
             marginBottom: 14, display: 'flex',
