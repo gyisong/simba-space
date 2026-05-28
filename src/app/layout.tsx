@@ -12,7 +12,12 @@ const notoSansKR = Noto_Sans_KR({
 
 export const metadata: Metadata = {
   title: "simba's space",
-  description: 'NGO 사업 기획자 simba의 공간',
+  description: 'NGO 사업 기획자 simba의 공간 — 기업-NGO 협력 사업 포트폴리오',
+  openGraph: {
+    title: "simba's space",
+    description: 'NGO 사업 기획자 simba의 공간 — 기업-NGO 협력 사업 포트폴리오',
+    type: 'website',
+  },
 }
 
 export const viewport: Viewport = {
