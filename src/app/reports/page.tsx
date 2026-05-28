@@ -25,6 +25,8 @@ export default async function ReportsPage({
     .eq('user_id', user.id)
     .order('period_start', { ascending: false })
 
+  const isAdmin = user.role === 'superadmin' || user.role === 'admin'
+  const today = new Date().toISOString().slice(0, 10)
   const now = new Date()
   const params = await searchParams
 
@@ -114,11 +116,19 @@ export default async function ReportsPage({
                         </div>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-                        <Link href={`/reports/${r.id}/edit`}
-                          style={{ padding: '5px 12px', background: '#fff', border: '1px solid #ffd6e7', borderRadius: 8, color: '#e06b9a', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
-                          수정
-                        </Link>
-                        <DeleteReportButton id={r.id} />
+                        {isAdmin || r.period_end >= today ? (
+                          <>
+                            <Link href={`/reports/${r.id}/edit`}
+                              style={{ padding: '5px 12px', background: '#fff', border: '1px solid #ffd6e7', borderRadius: 8, color: '#e06b9a', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
+                              수정
+                            </Link>
+                            <DeleteReportButton id={r.id} />
+                          </>
+                        ) : (
+                          <span style={{ fontSize: 12, color: '#c4a8b8', padding: '5px 10px', background: '#fdf6f9', borderRadius: 8, border: '1px solid #ffd6e7' }}>
+                            🔒 마감
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="grid-2col-sm">

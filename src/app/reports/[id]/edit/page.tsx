@@ -18,6 +18,23 @@ export default async function EditReportPage({ params }: { params: Promise<{ id:
 
   if (!report) notFound()
 
+  const isAdmin = user.role === 'superadmin' || user.role === 'admin'
+  const today = new Date().toISOString().slice(0, 10)
+  const isClosed = report.period_end < today
+
+  if (isClosed && !isAdmin) {
+    return (
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 20px' }}>
+        <h1 style={{ margin: '0 0 28px', fontSize: 22, fontWeight: 700, color: '#4a2d40' }}>주간보고 수정</h1>
+        <div style={{ background: '#fdf6f9', border: '1px solid #ffd6e7', borderRadius: 16, padding: '32px', textAlign: 'center' }}>
+          <div style={{ fontSize: 32, marginBottom: 12 }}>🔒</div>
+          <div style={{ fontWeight: 700, fontSize: 16, color: '#4a2d40', marginBottom: 8 }}>마감된 보고서입니다</div>
+          <div style={{ fontSize: 14, color: '#9d7a8a' }}>제출 기간({report.period_start} ~ {report.period_end})이 종료되어 수정할 수 없어요.</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 20px' }}>
       <h1 style={{ margin: '0 0 28px', fontSize: 22, fontWeight: 700, color: '#4a2d40' }}>주간보고 수정</h1>
