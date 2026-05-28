@@ -17,6 +17,18 @@ export async function PATCH(request: Request) {
 
     const supabase = createAdminClient()
 
+    // 닉네임 중복 체크
+    const { data: existing } = await supabase
+      .from('user_profiles')
+      .select('id')
+      .eq('name', name.trim())
+      .neq('id', user.id)
+      .single()
+
+    if (existing) {
+      return NextResponse.json({ error: '이미 사용 중인 닉네임이에요.' }, { status: 409 })
+    }
+
     // 30일 쿨다운 체크
     const { data: profile } = await supabase
       .from('user_profiles')

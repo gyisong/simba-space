@@ -91,7 +91,7 @@ function CommentRow({ photoId, comment, isAdmin, isLoggedIn, userName, isReply =
           <span style={{ fontSize: 12, color: '#c4a8b8' }}>{new Date(comment.created_at).toLocaleDateString('ko-KR')}</span>
         </div>
         <div style={{ display: 'flex', gap: 4, alignItems: 'center', flexShrink: 0 }}>
-          {!isReply && isLoggedIn && (
+          {!isReply && isLoggedIn && userName !== comment.name && (
             <button onClick={onReplyOpen} style={{ padding: '2px 8px', background: '#fdf2f8', border: '1px solid #ffd6e7', borderRadius: 6, color: '#db2777', fontSize: 11, cursor: 'pointer' }}>
               답글
             </button>
