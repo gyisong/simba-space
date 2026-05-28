@@ -4,8 +4,26 @@ import DeleteReportButton from '@/components/admin/DeleteReportButton'
 import ReportMonthFilter from '@/components/ReportMonthFilter'
 import ReportFeedbackForm from '@/components/admin/ReportFeedbackForm'
 
-function getWeekOfMonth(dateStr: string): number {
-  return Math.ceil(new Date(dateStr).getDate() / 7)
+function getMondayOf(dateStr: string): string {
+  const d = new Date(dateStr)
+  const day = d.getDay()
+  d.setDate(d.getDate() - (day === 0 ? 6 : day - 1))
+  return d.toISOString().slice(0, 10)
+}
+
+function getSundayOf(mondayStr: string): string {
+  const d = new Date(mondayStr)
+  d.setDate(d.getDate() + 6)
+  return d.toISOString().slice(0, 10)
+}
+
+function formatWeekLabel(mondayStr: string, sundayStr: string): string {
+  const DAYS = ['일', '월', '화', '수', '목', '금', '토']
+  const fmt = (s: string) => {
+    const d = new Date(s)
+    return `${d.getMonth() + 1}/${d.getDate()}(${DAYS[d.getDay()]})`
+  }
+  return `${fmt(mondayStr)} ~ ${fmt(sundayStr)}`
 }
 
 export default async function AdminReportsPage({
@@ -52,12 +70,13 @@ export default async function AdminReportsPage({
     return d.getFullYear() === selectedYear && d.getMonth() + 1 === selectedMonth
   })
 
-  const byWeek = new Map<number, typeof filtered>()
+  const byWeek = new Map<string, typeof filtered>()
   for (const r of filtered) {
-    const week = getWeekOfMonth(r.period_start)
-    if (!byWeek.has(week)) byWeek.set(week, [])
-    byWeek.get(week)!.push(r)
+    const monday = getMondayOf(r.period_start)
+    if (!byWeek.has(monday)) byWeek.set(monday, [])
+    byWeek.get(monday)!.push(r)
   }
+  const sortedWeeks = Array.from(byWeek.entries()).sort((a, b) => b[0].localeCompare(a[0]))
 
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 20px' }}>
@@ -81,15 +100,17 @@ export default async function AdminReportsPage({
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-          {Array.from(byWeek.entries()).map(([week, weekReports]) => (
-            <div key={week}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+          {sortedWeeks.map(([monday, weekReports]) => {
+            const sunday = getSundayOf(monday)
+            return (
+            <div key={monday}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, flexWrap: 'wrap' }}>
                 <span style={{
                   fontSize: 13, fontWeight: 700, color: '#db2777',
                   background: 'linear-gradient(135deg, #fce7f3, #fdf2f8)',
                   border: '1px solid #fda4c8', borderRadius: 20, padding: '4px 14px',
                 }}>
-                  {week}주차
+                  {formatWeekLabel(monday, sunday)}
                 </span>
                 <span style={{ fontSize: 12, color: '#c4a8b8' }}>{weekReports.length}명 제출</span>
               </div>
@@ -130,7 +151,8 @@ export default async function AdminReportsPage({
                 ))}
               </div>
             </div>
-          ))}
+            )
+          })}
         </div>
       )}
     </div>
