@@ -11,12 +11,14 @@ const notoSansKR = Noto_Sans_KR({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://simba-space.vercel.app'),
   title: "simba's space",
   description: 'NGO 사업 기획자 simba의 공간 — 기업-NGO 협력 사업 포트폴리오',
   openGraph: {
     title: "simba's space",
     description: 'NGO 사업 기획자 simba의 공간 — 기업-NGO 협력 사업 포트폴리오',
     type: 'website',
+    url: 'https://simba-space.vercel.app',
   },
 }
 
