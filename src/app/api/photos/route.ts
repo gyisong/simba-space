@@ -13,6 +13,7 @@ export async function POST(request: Request) {
     const file = formData.get('file') as File | null
     const title = formData.get('title') as string | null
     const description = formData.get('description') as string | null
+    const category_id = formData.get('category_id') as string | null
 
     if (!file) return NextResponse.json({ error: '파일을 선택해주세요.' }, { status: 400 })
 
@@ -33,6 +34,7 @@ export async function POST(request: Request) {
       title: title || null,
       description: description || null,
       image_url: urlData.publicUrl,
+      category_id: category_id || null,
     })
 
     if (dbErr) return NextResponse.json({ error: dbErr.message }, { status: 500 })

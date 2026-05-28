@@ -11,11 +11,16 @@ export default async function AdminPhotosPage() {
 
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 20px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24, flexWrap: 'wrap', gap: 10 }}>
         <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#4a2d40' }}>사진첩 관리 📷</h1>
-        <Link href="/admin/photos/new" style={{ padding: '9px 20px', background: 'linear-gradient(135deg, #f472b6, #db2777)', borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
-          + 업로드
-        </Link>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <Link href="/admin/photos/categories" style={{ padding: '9px 16px', background: '#fff', border: '1px solid #ffd6e7', borderRadius: 10, color: '#db2777', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
+            카테고리
+          </Link>
+          <Link href="/admin/photos/new" style={{ padding: '9px 20px', background: 'linear-gradient(135deg, #f472b6, #db2777)', borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
+            + 업로드
+          </Link>
+        </div>
       </div>
 
       {!photos?.length ? (
