@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { getCurrentUser } from '@/lib/auth'
+import StatusMessageEditor from '@/components/StatusMessageEditor'
 
 export default async function HomePage() {
   const supabase = await createClient()
 
-  const [{ data: projects }, { data: guestbook }] = await Promise.all([
+  const [{ data: projects }, { data: guestbook }, currentUser, { data: simbaProfile }] = await Promise.all([
     supabase
       .from('projects')
       .select('id, title, region, partner_company, cover_image_url, impact_text')
@@ -18,6 +20,12 @@ export default async function HomePage() {
       .eq('is_hidden', false)
       .order('created_at', { ascending: false })
       .limit(3),
+    getCurrentUser(),
+    supabase
+      .from('user_profiles')
+      .select('status_message')
+      .eq('role', 'superadmin')
+      .single(),
   ])
 
   return (
@@ -43,6 +51,10 @@ export default async function HomePage() {
             NGO 사업 기획자 ✦ 기업-NGO 협력 전문가<br />
             사람과 사람을 잇는 일을 합니다 🌿
           </p>
+          <StatusMessageEditor
+            message={simbaProfile?.status_message ?? null}
+            isAdmin={currentUser?.role === 'superadmin' || currentUser?.role === 'admin'}
+          />
           <div style={{ marginTop: 14, display: 'flex', gap: 10 }}>
             <Link href="/portfolio" style={{
               background: 'linear-gradient(135deg, #f472b6, #db2777)',
