@@ -44,7 +44,7 @@ export default function OGImage() {
         }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f981.png"
+            src="https://simba-space.vercel.app/lion.png"
             width={100}
             height={100}
             alt="lion"
