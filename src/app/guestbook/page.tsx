@@ -28,7 +28,7 @@ export default async function GuestbookPage() {
       <h1 style={{ margin: '0 0 6px', fontSize: 24, fontWeight: 700, color: '#4a2d40' }}>방명록 💌</h1>
       <p style={{ margin: '0 0 28px', color: '#9d7a8a', fontSize: 14 }}>simba에게 메시지를 남겨주세요 🌸</p>
 
-      <GuestbookForm />
+      <GuestbookForm isLoggedIn={!!user} />
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {!entries?.length ? (

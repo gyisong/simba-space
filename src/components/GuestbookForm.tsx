@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-export default function GuestbookForm() {
+export default function GuestbookForm({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
   const router = useRouter()
   const [name, setName] = useState('')
   const [message, setMessage] = useState('')
@@ -66,9 +66,11 @@ export default function GuestbookForm() {
           ✓ 등록됐어요! 🌸
         </div>
       )}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isLoggedIn ? '1fr' : '1fr 1fr', gap: 10, marginBottom: 10 }}>
         <input value={name} onChange={e => setName(e.target.value)} required placeholder="이름" autoComplete="off" maxLength={50} style={inputStyle} />
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="비밀번호 (삭제 시 사용)" autoComplete="new-password" maxLength={100} style={inputStyle} />
+        {!isLoggedIn && (
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="비밀번호 (삭제 시 사용)" autoComplete="new-password" maxLength={100} style={inputStyle} />
+        )}
       </div>
       <textarea
         value={message}

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { getCurrentUser } from '@/lib/auth'
 import { createHash } from 'crypto'
 
 function hashPassword(password: string): string {
@@ -15,12 +16,15 @@ function getIP(request: Request): string {
 export async function POST(request: Request) {
   try {
     const { name, message, password } = await request.json()
-    if (!name || !message || !password) {
+    const user = await getCurrentUser()
+    const isLoggedIn = !!user
+
+    if (!name || !message || (!isLoggedIn && !password)) {
       return NextResponse.json({ error: '이름, 메시지, 비밀번호를 입력해주세요.' }, { status: 400 })
     }
 
     const ip_address = getIP(request)
-    const password_hash = hashPassword(password)
+    const password_hash = password ? hashPassword(password) : null
 
     const supabase = createAdminClient()
     const { error } = await supabase.from('guestbook').insert({ name, message, ip_address, password_hash })
