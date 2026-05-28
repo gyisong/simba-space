@@ -44,7 +44,7 @@ export default function OGImage() {
         }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f981.svg"
+            src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f981.png"
             width={100}
             height={100}
             alt="lion"
