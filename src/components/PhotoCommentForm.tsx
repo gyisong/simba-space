@@ -7,12 +7,13 @@ interface Props {
   photoId: string
   parentId?: string
   isLoggedIn: boolean
+  userName?: string
   onCancel?: () => void
 }
 
-export default function PhotoCommentForm({ photoId, parentId, isLoggedIn, onCancel }: Props) {
+export default function PhotoCommentForm({ photoId, parentId, isLoggedIn, userName, onCancel }: Props) {
   const router = useRouter()
-  const [name, setName] = useState('')
+  const [name, setName] = useState(userName ?? '')
   const [message, setMessage] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -54,7 +55,7 @@ export default function PhotoCommentForm({ photoId, parentId, isLoggedIn, onCanc
         </div>
       )}
       <div style={{ display: 'grid', gridTemplateColumns: isLoggedIn ? '1fr' : '1fr 1fr', gap: 8 }}>
-        <input value={name} onChange={e => setName(e.target.value)} required placeholder="이름" maxLength={50} autoComplete="off" style={inputStyle} />
+        <input value={name} onChange={e => setName(e.target.value)} required placeholder="이름" maxLength={50} autoComplete="off" readOnly={isLoggedIn} style={{ ...inputStyle, background: isLoggedIn ? '#fdf9fb' : undefined }} />
         {!isLoggedIn && (
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="비밀번호 (삭제 시 사용)" maxLength={100} autoComplete="new-password" style={inputStyle} />
         )}

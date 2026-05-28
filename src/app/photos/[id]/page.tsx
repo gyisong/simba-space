@@ -32,7 +32,7 @@ export default async function PhotoDetailPage({ params }: { params: Promise<{ id
           <div style={{ padding: '16px 20px' }}>
             {photo.title && <h1 style={{ margin: '0 0 6px', fontSize: 20, fontWeight: 700, color: '#4a2d40' }}>{photo.title}</h1>}
             {photo.description && <p style={{ margin: 0, fontSize: 14, color: '#7c5c6e', lineHeight: 1.7 }}>{photo.description}</p>}
-            <p style={{ margin: '8px 0 0', fontSize: 12, color: '#c4a8b8' }}>{new Date(photo.created_at).toLocaleDateString('ko-KR')}</p>
+            <p style={{ margin: '8px 0 0', fontSize: 12, color: '#c4a8b8' }}>{new Date(photo.created_at).toLocaleString('ko-KR')}</p>
           </div>
         )}
       </div>
@@ -42,7 +42,7 @@ export default async function PhotoDetailPage({ params }: { params: Promise<{ id
         <h2 style={{ margin: '0 0 16px', fontSize: 16, fontWeight: 700, color: '#4a2d40' }}>댓글 {comments?.length ?? 0}개</h2>
 
         <div style={{ marginBottom: 20 }}>
-          <PhotoCommentForm photoId={id} isLoggedIn={isLoggedIn} />
+          <PhotoCommentForm photoId={id} isLoggedIn={isLoggedIn} userName={user?.name} />
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>

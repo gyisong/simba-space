@@ -33,7 +33,7 @@ export default async function PhotosPage() {
                   <div style={{ padding: '10px 14px' }}>
                     <p style={{ margin: 0, fontSize: 14, fontWeight: 600, color: '#4a2d40' }}>{photo.title}</p>
                     <p style={{ margin: '4px 0 0', fontSize: 12, color: '#c4a8b8' }}>
-                      {new Date(photo.created_at).toLocaleDateString('ko-KR')}
+                      {new Date(photo.created_at).toLocaleString('ko-KR')}
                     </p>
                   </div>
                 )}
