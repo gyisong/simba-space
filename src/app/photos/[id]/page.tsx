@@ -2,8 +2,7 @@ import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth'
 import PhotoCommentForm from '@/components/PhotoCommentForm'
-import PhotoCommentDeleteButton from '@/components/PhotoCommentDeleteButton'
-import PhotoReplyButton from '@/components/PhotoReplyButton'
+import PhotoCommentItem from '@/components/PhotoCommentItem'
 
 export default async function PhotoDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -49,42 +48,17 @@ export default async function PhotoDetailPage({ params }: { params: Promise<{ id
           {topLevel.length === 0 && (
             <p style={{ textAlign: 'center', color: '#b8a0b0', fontSize: 14, margin: '12px 0' }}>첫 댓글을 남겨주세요 🌸</p>
           )}
-          {topLevel.map(comment => {
-            const commentReplies = replies.filter(r => r.parent_id === comment.id)
-            return (
-              <div key={comment.id}>
-                {/* 댓글 */}
-                <div style={{ background: '#fdf9fb', borderRadius: 12, padding: '12px 14px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6, gap: 8 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <span style={{ fontWeight: 700, fontSize: 13, color: '#4a2d40' }}>🌸 {comment.name}</span>
-                      <span style={{ fontSize: 12, color: '#c4a8b8' }}>{new Date(comment.created_at).toLocaleDateString('ko-KR')}</span>
-                    </div>
-                    <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
-                      <PhotoReplyButton photoId={id} parentId={comment.id} isLoggedIn={isLoggedIn} />
-                      <PhotoCommentDeleteButton photoId={id} commentId={comment.id} isAdmin={isAdmin} hasPassword={!!comment.password_hash} />
-                    </div>
-                  </div>
-                  <p style={{ margin: 0, fontSize: 14, color: '#5c4a5a', lineHeight: 1.7 }}>{comment.message}</p>
-                </div>
-
-                {/* 대댓글 */}
-                {commentReplies.map(reply => (
-                  <div key={reply.id} style={{ marginLeft: 20, marginTop: 6, background: '#fff', border: '1px solid #ffeef5', borderRadius: 10, padding: '10px 14px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4, gap: 8 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ fontSize: 12, color: '#c084fc' }}>↳</span>
-                        <span style={{ fontWeight: 700, fontSize: 13, color: '#4a2d40' }}>{reply.name}</span>
-                        <span style={{ fontSize: 12, color: '#c4a8b8' }}>{new Date(reply.created_at).toLocaleDateString('ko-KR')}</span>
-                      </div>
-                      <PhotoCommentDeleteButton photoId={id} commentId={reply.id} isAdmin={isAdmin} hasPassword={!!reply.password_hash} />
-                    </div>
-                    <p style={{ margin: 0, fontSize: 14, color: '#5c4a5a', lineHeight: 1.7 }}>{reply.message}</p>
-                  </div>
-                ))}
-              </div>
-            )
-          })}
+          {topLevel.map(comment => (
+            <PhotoCommentItem
+              key={comment.id}
+              photoId={id}
+              comment={comment}
+              replies={replies.filter(r => r.parent_id === comment.id)}
+              isAdmin={isAdmin}
+              isLoggedIn={isLoggedIn}
+              userName={user?.name}
+            />
+          ))}
         </div>
       </div>
     </div>

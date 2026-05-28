@@ -7,6 +7,23 @@ function hashPassword(password: string): string {
   return createHash('sha256').update(password).digest('hex')
 }
 
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string; commentId: string }> }
+) {
+  const { commentId } = await params
+  const user = await getCurrentUser()
+  if (!user || (user.role !== 'admin' && user.role !== 'superadmin')) {
+    return NextResponse.json({ error: '권한 없음' }, { status: 403 })
+  }
+  const { message } = await request.json()
+  if (!message?.trim()) return NextResponse.json({ error: '내용을 입력해주세요.' }, { status: 400 })
+  const supabase = createAdminClient()
+  const { error } = await supabase.from('photo_comments').update({ message: message.trim() }).eq('id', commentId)
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  return NextResponse.json({ success: true })
+}
+
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string; commentId: string }> }

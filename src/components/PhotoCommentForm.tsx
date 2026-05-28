@@ -54,12 +54,12 @@ export default function PhotoCommentForm({ photoId, parentId, isLoggedIn, userNa
           {error}
         </div>
       )}
-      <div style={{ display: 'grid', gridTemplateColumns: isLoggedIn ? '1fr' : '1fr 1fr', gap: 8 }}>
-        <input value={name} onChange={e => setName(e.target.value)} required placeholder="이름" maxLength={50} autoComplete="off" readOnly={isLoggedIn} style={{ ...inputStyle, background: isLoggedIn ? '#fdf9fb' : undefined }} />
-        {!isLoggedIn && (
+      {!isLoggedIn && (
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+          <input value={name} onChange={e => setName(e.target.value)} required placeholder="이름" maxLength={50} autoComplete="off" style={inputStyle} />
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="비밀번호 (삭제 시 사용)" maxLength={100} autoComplete="new-password" style={inputStyle} />
-        )}
-      </div>
+        </div>
+      )}
       <textarea
         value={message} onChange={e => setMessage(e.target.value)} required
         placeholder="댓글을 남겨주세요 🌸" rows={2} maxLength={300}
