@@ -60,7 +60,7 @@ export default function OGImage() {
             fontSize: 26, color: '#9d7a8a', display: 'flex', gap: 12, alignItems: 'center',
           }}>
             <span>NGO 사업 기획자</span>
-            <span style={{ color: '#fda4c8' }}>✦</span>
+            <span style={{ color: '#fda4c8', margin: '0 8px' }}>·</span>
             <span>기업-NGO 협력 전문가</span>
           </div>
         </div>
