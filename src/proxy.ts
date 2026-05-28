@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 // 로그인 없이 접근 가능한 경로
-const PUBLIC_PATHS = ['/', '/portfolio', '/contact', '/guestbook', '/login']
+const PUBLIC_PATHS = ['/', '/portfolio', '/contact', '/guestbook', '/login', '/photos']
 
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
@@ -30,7 +30,7 @@ export async function proxy(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname
   const isPublic = pathname.startsWith('/api/') || pathname.startsWith('/auth/')
-    || PUBLIC_PATHS.some(p => pathname === p || pathname.startsWith('/portfolio/'))
+    || PUBLIC_PATHS.some(p => pathname === p || pathname.startsWith('/portfolio/') || pathname.startsWith('/photos/'))
 
   // 비로그인 + 비공개 경로 → 로그인 페이지로
   if (!user && !isPublic) {
