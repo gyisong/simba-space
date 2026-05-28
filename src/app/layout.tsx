@@ -19,6 +19,14 @@ export const metadata: Metadata = {
     description: 'NGO 사업 기획자 simba의 공간 — 기업-NGO 협력 사업 포트폴리오',
     type: 'website',
     url: 'https://simba-space.vercel.app',
+    images: [
+      {
+        url: 'https://simba-space.vercel.app/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: "simba's space",
+      },
+    ],
   },
 }
 

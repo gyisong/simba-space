@@ -4,6 +4,7 @@ export const runtime = 'edge'
 export const alt = "simba's space"
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
+export const revalidate = false
 
 export default function OGImage() {
   return new ImageResponse(
@@ -81,6 +82,11 @@ export default function OGImage() {
         </div>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      headers: {
+        'Cache-Control': 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800',
+      },
+    }
   )
 }
