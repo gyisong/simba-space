@@ -2,6 +2,30 @@ import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getCurrentUser } from '@/lib/auth'
 
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params
+  const user = await getCurrentUser()
+  if (!user || (user.role !== 'admin' && user.role !== 'superadmin')) {
+    return NextResponse.json({ error: '권한 없음' }, { status: 403 })
+  }
+  try {
+    const { title, description, category_id } = await request.json()
+    const supabase = createAdminClient()
+    const { error } = await supabase.from('photos').update({
+      title: title || null,
+      description: description || null,
+      category_id: category_id || null,
+    }).eq('id', id)
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ success: true })
+  } catch (e) {
+    return NextResponse.json({ error: String(e) }, { status: 500 })
+  }
+}
+
 export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }

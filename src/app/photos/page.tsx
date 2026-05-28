@@ -10,12 +10,7 @@ export default async function PhotosPage({ searchParams }: { searchParams: Promi
     supabase
       .from('photos')
       .select('id, title, image_url, created_at, category_id, photo_comments(count)')
-      .eq('is_hidden' as never, false)
-      .order('created_at', { ascending: false })
-      .then(res => {
-        // category_id 필터는 별도 처리
-        return res
-      }),
+      .order('created_at', { ascending: false }),
   ])
 
   let photos = photosResult.data ?? []

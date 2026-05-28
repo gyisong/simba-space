@@ -34,14 +34,15 @@ export default async function AdminPhotosPage() {
               <div style={{ width: '100%', aspectRatio: '4/3', overflow: 'hidden', background: '#fdf2f8' }}>
                 <img src={photo.image_url} alt={photo.title ?? '사진'} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
               </div>
-              <div style={{ padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-                <div style={{ overflow: 'hidden' }}>
-                  <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: '#4a2d40', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {photo.title ?? '제목 없음'}
-                  </p>
-                  <p style={{ margin: '2px 0 0', fontSize: 11, color: '#c4a8b8' }}>{new Date(photo.created_at).toLocaleDateString('ko-KR')}</p>
+              <div style={{ padding: '10px 12px' }}>
+                <p style={{ margin: '0 0 6px', fontSize: 13, fontWeight: 600, color: '#4a2d40', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {photo.title ?? '제목 없음'}
+                </p>
+                <p style={{ margin: '0 0 8px', fontSize: 11, color: '#c4a8b8' }}>{new Date(photo.created_at).toLocaleDateString('ko-KR')}</p>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <Link href={`/admin/photos/${photo.id}/edit`} style={{ flex: 1, padding: '5px 0', background: '#fdf2f8', border: '1px solid #ffd6e7', borderRadius: 6, color: '#db2777', fontSize: 12, textDecoration: 'none', textAlign: 'center' }}>수정</Link>
+                  <AdminPhotoDeleteButton id={photo.id} />
                 </div>
-                <AdminPhotoDeleteButton id={photo.id} />
               </div>
             </div>
           ))}
