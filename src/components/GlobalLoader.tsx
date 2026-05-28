@@ -125,12 +125,12 @@ function LoaderCore() {
 
           {/* 심바 + 그림자 */}
           <div style={{ position: 'relative', width: 100, height: 120, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end' }}>
-            <span style={{
-              fontSize: 72, lineHeight: 1, userSelect: 'none',
-              display: 'block', position: 'absolute', bottom: 12,
+            <img src="/lion.png" alt="simba" width={72} height={72} style={{
+              userSelect: 'none', display: 'block', position: 'absolute', bottom: 12,
               animation: 'simbaJump 0.9s cubic-bezier(0.36,0.07,0.19,0.97) infinite',
               filter: 'drop-shadow(0 8px 16px rgba(219,39,119,0.2))',
-            }}>🦁</span>
+              objectFit: 'contain',
+            }} />
             <div style={{
               width: 60, height: 10,
               background: 'radial-gradient(ellipse, rgba(74,45,64,0.35) 0%, transparent 70%)',

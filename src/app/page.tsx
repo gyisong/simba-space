@@ -41,9 +41,9 @@ export default async function HomePage() {
           width: 100, height: 100, borderRadius: '50%',
           background: 'linear-gradient(135deg, #f472b6, #c084fc)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 44, flexShrink: 0,
+          flexShrink: 0, overflow: 'hidden',
         }}>
-          🦁
+          <img src="/lion.png" alt="simba" width={100} height={100} style={{ objectFit: 'cover' }} />
         </div>
         <div>
           <h1 style={{ margin: 0, fontSize: 26, fontWeight: 700, color: '#4a2d40' }}>simba</h1>
