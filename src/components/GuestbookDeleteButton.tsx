@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function GuestbookDeleteButton({ id, isAdmin }: { id: string; isAdmin: boolean }) {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -12,7 +14,7 @@ export default function GuestbookDeleteButton({ id, isAdmin }: { id: string; isA
     if (isAdmin) {
       if (!confirm('이 방명록을 삭제하시겠습니까?')) return
       await fetch(`/api/guestbook/${id}`, { method: 'DELETE' })
-      window.location.reload()
+      router.refresh()
       return
     }
     setOpen(true)
@@ -33,7 +35,7 @@ export default function GuestbookDeleteButton({ id, isAdmin }: { id: string; isA
       setLoading(false)
       return
     }
-    window.location.reload()
+    router.refresh()
   }
 
   if (open) {

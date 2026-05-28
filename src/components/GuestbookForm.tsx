@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function GuestbookForm() {
+  const router = useRouter()
   const [name, setName] = useState('')
   const [message, setMessage] = useState('')
   const [password, setPassword] = useState('')
@@ -42,7 +44,8 @@ export default function GuestbookForm() {
       setName('')
       setMessage('')
       setPassword('')
-      setTimeout(() => { setDone(false); window.location.reload() }, 1500)
+      router.refresh()
+      setTimeout(() => setDone(false), 1500)
     } catch (e) {
       setError('fetch 오류: ' + String(e))
     } finally {
@@ -59,9 +62,9 @@ export default function GuestbookForm() {
         </div>
       )}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: 10, marginBottom: 12 }}>
-        <input value={name} onChange={e => setName(e.target.value)} required placeholder="이름" style={input} />
-        <input value={message} onChange={e => setMessage(e.target.value)} required placeholder="메시지를 남겨주세요 🌸" style={input} />
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="비밀번호" style={input} />
+        <input value={name} onChange={e => setName(e.target.value)} required placeholder="이름" autoComplete="off" style={input} />
+        <input value={message} onChange={e => setMessage(e.target.value)} required placeholder="메시지를 남겨주세요 🌸" autoComplete="off" style={input} />
+        <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="비밀번호" autoComplete="new-password" style={input} />
       </div>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ fontSize: 12, color: '#c4a8b8' }}>비밀번호는 나중에 삭제할 때 사용됩니다.</span>
