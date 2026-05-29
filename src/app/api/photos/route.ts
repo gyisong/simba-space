@@ -1,6 +1,32 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth'
+
+const PAGE_SIZE = 12
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url)
+  const category = searchParams.get('category')
+  const page = Math.max(1, parseInt(searchParams.get('page') ?? '1'))
+
+  const supabase = await createClient()
+  const from = (page - 1) * PAGE_SIZE
+  const to = from + PAGE_SIZE - 1
+
+  const query = supabase
+    .from('photos')
+    .select('id, title, image_url, created_at, category_id, photo_comments(count)', { count: 'exact' })
+    .order('created_at', { ascending: false })
+    .range(from, to)
+
+  const { data, count, error } = category
+    ? await query.eq('category_id', category)
+    : await query
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  return NextResponse.json({ photos: data ?? [], total: count ?? 0 })
+}
 
 export async function POST(request: Request) {
   const user = await getCurrentUser()
